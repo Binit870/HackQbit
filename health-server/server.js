@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import symptomRoutes from "./routes/symptomRoutes.js";
+import healthRoutes from "./routes/healthRoutes.js"; // ✅ added
 
 dotenv.config();
 connectDB();
@@ -42,6 +43,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/symptoms", symptomRoutes);
+app.use("/api/health", healthRoutes); // ✅ added
 
 // ✅ Start server
 const PORT = process.env.PORT || 5000;
