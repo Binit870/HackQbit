@@ -1,6 +1,9 @@
  const PageMappings = {
   
-  "diagnosis": "/symptom-checker",
+  "diagnosis": "/symptom",
+  "report": "/report",
+  "community": "/community",
+  "healthmonitor": "/healthmonitor",
   
 };
 export default PageMappings;

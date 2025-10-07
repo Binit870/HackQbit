@@ -9,7 +9,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
 
@@ -21,11 +20,9 @@ const Login = () => {
     try {
       await login(email, password);
       setMessage({ type: "success", text: "Login successful! Redirecting..." });
-
       setTimeout(() => {
         navigate("/");
       }, 1500);
-
     } catch (error) {
       setMessage({ type: "error", text: error.message });
       setIsLoading(false);
@@ -38,8 +35,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative  text-white">
-      
+    <div className="min-h-screen flex items-center justify-center relative text-white">
       <img
         src={loginBg}
         alt="abstract background"
@@ -51,18 +47,16 @@ const Login = () => {
         animate="visible"
         className="relative z-10 backdrop-blur-xl bg-white/10 p-10 rounded-3xl shadow-2xl border border-white/20 w-96 mt-12 min-h-[500px] flex flex-col justify-center"
       >
-        <h2 className="text-4xl font-extrabold mb-6 text-center tracking-wide drop-shadow-lg">
+        <h2 className="text-4xl font-extrabold text-cyan-500/80 mb-6 text-center tracking-wide drop-shadow-lg">
           Welcome Back
         </h2>
-        <p className="text-center text-white/80 mb-8">
-          Sign in to your account
-        </p>
+        <p className="text-center text-black mb-8">Sign in to your account</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
           <input
             type="email"
             placeholder="Email"
-            className="px-5 py-3 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white transition-colors"
+            className="px-5 py-3 rounded-xl bg-white text-black placeholder-gray-500 border border-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -70,34 +64,34 @@ const Login = () => {
           <input
             type="password"
             placeholder="Password"
-            className="px-5 py-3 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white transition-colors"
+            className="px-5 py-3 rounded-xl bg-white text-black placeholder-gray-500 border border-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          
+
           <button
             type="submit"
-            className="px-6 py-3 rounded-xl bg-white/20 border border-white/30 hover:bg-white/30 text-white font-semibold text-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-3 rounded-xl bg-cyan-500/80 hover:bg-cyan-600 text-white font-semibold text-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isLoading}
           >
             {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
-        
-        {/* Display the message here */}
+
         {message.text && (
-          <p className={`mt-6 text-center text-sm font-medium ${
-            message.type === 'success' ? 'text-green-400' : 'text-red-400'
-          }`}>
+          <p
+            className={`mt-6 text-center text-sm font-medium ${
+              message.type === "success" ? "text-green-400" : "text-red-400"
+            }`}
+          >
             {message.text}
           </p>
         )}
 
-        {/* Signup Link */}
-        <p className="mt-8 text-center text-white/80 text-sm">
-          Don't have an account?{" "}
-          <Link to="/signup" className="text-white font-semibold hover:underline">
+        <p className="mt-8 text-center text-black text-sm">
+          Don’t have an account?{" "}
+          <Link to="/signup" className="text-cyan-500/80 underline font-semibold hover:underline">
             Sign up
           </Link>
         </p>

@@ -4,9 +4,13 @@ import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import Symptoms from "./components/symptoms/Symptoms";
 import Navbar from "./components/Navbar/Navbar";
+import ProtectedRoute from './components/ProtectedRoutes';
 import HealthMonitor from "./pages/HealthMonitor";
 import Report from "./pages/Report";
 import Community from "./components/Community/Community"
+import Consult from "./pages/Consultancy";
+import ConsultChat from "./pages/ConsultChat";
+
 function App() {
   const location = useLocation();
 
@@ -22,19 +26,65 @@ function App() {
       {/* Show Navbar conditionally */}
       {!hideNavbar && <Navbar />}
 
-      <div className={`flex-grow flex flex-col ${!hideNavbar ? "" : ""}`}/>
+      <div className={`flex-grow flex flex-col ${!hideNavbar ? "pt-16" : ""}`}>
         <Routes>
           {/* Pages */}
           <Route path="/" element={<Home />} />
-          <Route path="/healthmonitor" element={<HealthMonitor />} /> {/* ✅ Added new route */}
+   
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/report" element={<Report />} />
-          <Route path="/symptom" element={<Symptoms/>}/>
-          <Route path="/community" element={<Community/>}/>
+          <Route
+            path="/healthmonitor"
+            element={
+              <ProtectedRoute>
+                <HealthMonitor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/report"
+            element={
+              <ProtectedRoute>
+                <Report />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/symptom"
+            element={
+              <ProtectedRoute>
+                <Symptoms />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/community"
+            element={
+              <ProtectedRoute>
+                <Community />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/consult"
+            element={
+              <ProtectedRoute>
+                <Consult />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/consult/chat/:doctorId"
+            element={
+              <ProtectedRoute>
+                <ConsultChat />
+              </ProtectedRoute>
+            }
+          />
+          
         </Routes>
       </div>
-    // </div>
+     </div>
   );
 }
 

@@ -34,6 +34,7 @@ const Navbar = () => {
           <Link
             to="/"
             className="flex items-center space-x-2 text-2xl font-bold text-green-900"
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             <IoFitnessOutline className="text-emerald-500" />
             <span>Healthcare</span>
@@ -50,6 +51,12 @@ const Navbar = () => {
           </Link>
           <Link to="/report" className="hover:text-emerald-500 transition-colors">
             Report
+          </Link>
+          <Link to="/consult" className="hover:text-emerald-500 transition-colors">
+            Consult
+          </Link>
+          <Link to="/community" className="hover:text-emerald-500 transition-colors">
+            Community
           </Link>
         </div>
 
@@ -97,43 +104,73 @@ const Navbar = () => {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="lg:hidden text-green-900 text-2xl"
+            className="lg:hidden text-green-900 text-3xl focus:outline-none"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            ☰
+            {isMobileMenuOpen ? "✕" : "☰"}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-green-100/20 border-t border-green-300/30 backdrop-blur-xl text-green-900 px-4 py-3 space-y-2 rounded-b-2xl shadow-lg">
-          <Link
-            to="/"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block hover:text-emerald-500 transition-colors"
-          >
-            Home
-          </Link>
-          <Link
-            to="/symptom"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block hover:text-emerald-500 transition-colors"
-          >
-            Diagnosis
-          </Link>
-          <Link
-            to="/report"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="block hover:text-emerald-500 transition-colors"
-          >
-            Report
-          </Link>
-          <SearchBar
-            searchQuery={searchQuery}
-            onChange={handleSearchChange}
-            onKeyPress={handleKeyPress}
-          />
+        <div className="lg:hidden bg-green-100/20 border-t border-green-300/30 backdrop-blur-xl text-green-900 px-4 py-4 space-y-3 rounded-b-2xl shadow-lg transition-all duration-300">
+          {/* All desktop links for mobile */}
+          <div className="flex flex-col space-y-2 font-medium">
+            <Link
+              to="/"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block hover:text-emerald-500 transition-colors"
+            >
+              Home
+            </Link>
+            <Link
+              to="/symptom"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block hover:text-emerald-500 transition-colors"
+            >
+              Diagnosis
+            </Link>
+            <Link
+              to="/report"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block hover:text-emerald-500 transition-colors"
+            >
+              Report
+            </Link>
+            <Link
+              to="/consult"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block hover:text-emerald-500 transition-colors"
+            >
+              Consult
+            </Link>
+            <Link
+              to="/community"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block hover:text-emerald-500 transition-colors"
+            >
+              Community
+            </Link>
+            <Link
+              to="/notifications"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block hover:text-emerald-500 transition-colors"
+            >
+              Notifications
+            </Link>
+          </div>
+
+          {/* Mobile Search */}
+          <div className="pt-2">
+            <SearchBar
+              searchQuery={searchQuery}
+              onChange={handleSearchChange}
+              onKeyPress={handleKeyPress}
+            />
+          </div>
+
+          {/* Auth Buttons */}
           {token ? (
             <button
               onClick={() => {
