@@ -4,7 +4,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import symptomRoutes from "./routes/symptomRoutes.js";
-
+import aiRoutes from "./routes/aiRoutes.js";
 dotenv.config();
 connectDB();
 
@@ -13,8 +13,6 @@ const app = express();
 // ✅ Allowed origins
 const allowedOrigins = [
   "http://localhost:5173",
-  "http://localhost:5174",
-  "https://healthxcure.netlify.app",
 ];
 
 // ✅ CORS middleware
@@ -42,6 +40,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/symptoms", symptomRoutes);
+app.use("/api/ai", aiRoutes);
+
 
 // ✅ Start server
 const PORT = process.env.PORT || 5000;
