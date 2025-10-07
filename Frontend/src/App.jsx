@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import Symptoms from "./components/symtoms/Symptoms";
 import Navbar from "./components/Navbar/Navbar";
+import Report from "./pages/Report";
 
 function App() {
   const location = useLocation();
@@ -28,11 +29,13 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/report" element={<Symptoms />} />
+          <Route path="/report" element={<Report />} />
+          <Route path="/symtoms" element={<symtoms/>}/>
         </Routes>
       </div>
-    </div>
+    // </div>
   );
+}
 
 }
 export default App;
