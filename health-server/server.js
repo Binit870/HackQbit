@@ -4,7 +4,12 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import symptomRoutes from "./routes/symptomRoutes.js";
-import healthRoutes from "./routes/healthRoutes.js"; // ✅ added
+import healthRoutes from "./routes/healthRoutes.js";
+
+// ✅ Added for Alerts Feature
+import alertRoutes from "./routes/alerts.js";
+import { startScheduler } from "./utils/scheduler.js";
+// ✅ End additions
 
 dotenv.config();
 connectDB();
@@ -41,7 +46,14 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/symptoms", symptomRoutes);
-app.use("/api/health", healthRoutes); // ✅ added
+app.use("/api/health", healthRoutes);
+
+// ✅ Added new routes for alert preferences
+app.use("/api/alerts", alertRoutes);
+
+// ✅ Start automatic email notification scheduler
+startScheduler();
+// ✅ End additions
 
 // ✅ Start server
 const PORT = process.env.PORT || 5000;
