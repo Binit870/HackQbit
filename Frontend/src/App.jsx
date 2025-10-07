@@ -19,11 +19,11 @@ function App() {
   const hideNavbar = pathsWithoutNavbar.has(normalizedPathname.toLowerCase());
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-cyan-900 to-blue-900 font-inter">
+    <div className="flex flex-col min-h-screen font-inter">
       {/* Show Navbar conditionally */}
       {!hideNavbar && <Navbar />}
 
-      {/* <div className={flex-grow flex flex-col ${!hideNavbar ? "pt-16" : ""}}> */}
+      <div className={`flex-grow flex flex-col ${!hideNavbar ? "" : ""}`}>
         <Routes>
           {/* Pages */}
           <Route path="/" element={<Home />} />
@@ -38,5 +38,5 @@ function App() {
   );
 }
 
-
+}
 export default App;
