@@ -45,7 +45,7 @@ const Navbar = () => {
           <Link to="/" className="hover:text-emerald-500 transition-colors">
             Home
           </Link>
-          <Link to="/diagnosis" className="hover:text-emerald-500 transition-colors">
+          <Link to="/symptom" className="hover:text-emerald-500 transition-colors">
             Diagnosis
           </Link>
           <Link to="/report" className="hover:text-emerald-500 transition-colors">
@@ -116,7 +116,7 @@ const Navbar = () => {
             Home
           </Link>
           <Link
-            to="/diagnosis"
+            to="/symptom"
             onClick={() => setIsMobileMenuOpen(false)}
             className="block hover:text-emerald-500 transition-colors"
           >

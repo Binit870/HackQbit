@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import symptomData from "../../data/symptom.json";
+
 
 const Symptoms = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,8 @@ const Symptoms = () => {
     regularMedicine: "",
   });
 
+  const [result, setResult] = useState(null);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -18,7 +22,33 @@ const Symptoms = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Your entered details:\n" + JSON.stringify(formData, null, 2));
+
+    const enteredSymptoms = formData.symptoms
+      .toLowerCase()
+      .split(",")
+      .map((s) => s.trim());
+
+    let bestMatch = null;
+    let highestMatchCount = 0;
+
+    symptomData.forEach((diseaseObj) => {
+      const matchCount = diseaseObj.symptoms.filter((symptom) =>
+        enteredSymptoms.includes(symptom.toLowerCase())
+      ).length;
+
+      if (matchCount > highestMatchCount) {
+        highestMatchCount = matchCount;
+        bestMatch = diseaseObj.disease;
+      }
+    });
+
+    if (bestMatch && highestMatchCount > 0) {
+      setResult(
+        `🩺 Based on your symptoms, the most likely condition is: **${bestMatch}**`
+      );
+    } else {
+      setResult("⚠️ No matching disease found. Please check your symptoms.");
+    }
   };
 
   const handleViewHistory = () => {
@@ -38,18 +68,18 @@ const Symptoms = () => {
       }}
     >
       {/* 🌿 Left Side Text + Image Section */}
-<div className="absolute left-12 top-1/2 -translate-y-1/2 z-10 max-w-md">
-  <h1
-    className="text-6xl font-extrabold leading-tight drop-shadow-lg 
-               bg-gradient-to-r from-green-500 via-green-500 to-green-700 
-               bg-clip-text text-transparent border-b-4 border-green-700"
-  >
-    AI POWERED<br />SYMPTOM CHECKER
-  </h1>
+      <div className="absolute left-12 top-1/2 -translate-y-1/2 z-10 max-w-md">
+        <h1
+          className="text-6xl font-extrabold leading-tight drop-shadow-lg 
+                     bg-gradient-to-r from-green-500 via-green-500 to-green-700 
+                     bg-clip-text text-transparent border-b-4 border-green-700"
+        >
+          AI POWERED<br />SYMPTOM CHECKER
+        </h1>
 
-  <p className="mt-4 text-lg text-gray-700 font-medium">
-    Enter your symptoms and AI will suggest possible conditions.
-  </p>
+        <p className="mt-4 text-lg text-gray-700 font-medium">
+          Enter your symptoms and AI will suggest possible conditions.
+        </p>
 
         {/* 💚 Image Below Text */}
         <div className="mt-10">
@@ -61,7 +91,7 @@ const Symptoms = () => {
         </div>
       </div>
 
-      {/* 🌿 Glassmorphism Form Card (centered) */}
+      {/* 🌿 Glassmorphism Form Card */}
       <div className="relative z-10 backdrop-blur-xl bg-white/30 border border-white/40 shadow-2xl rounded-3xl p-6 w-full max-w-lg mx-4">
         <h2 className="text-3xl font-bold text-center text-green-800 mb-6 drop-shadow-md">
           Check Your Symptoms
@@ -156,7 +186,7 @@ const Symptoms = () => {
             Check Symptoms
           </button>
 
-          {/* 🌿 View History Button */}
+          {/* View History Button */}
           <button
             type="button"
             onClick={handleViewHistory}
@@ -165,6 +195,13 @@ const Symptoms = () => {
             View History
           </button>
         </form>
+
+        {/* 🧠 Result Display */}
+        {result && (
+          <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800 font-semibold shadow">
+            {result}
+          </div>
+        )}
       </div>
     </div>
   );

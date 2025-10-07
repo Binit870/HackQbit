@@ -12,27 +12,21 @@ const ZERO_DATA = {
 const HealthMonitor = () => {
   const [data, setData] = useState(ZERO_DATA);
   const [monitoring, setMonitoring] = useState(false);
-  const intervalRef = useRef(null); // avoid stale state issues
+  const intervalRef = useRef(null);
 
   const fetchHealthData = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/health/monitor");
-      // Expect numeric values from backend
       if (res && res.data) setData(res.data);
     } catch (err) {
       console.error("Error fetching health data:", err);
-      // keep showing previous data; you can show an error indicator if needed
     }
   };
 
   const startMonitoring = () => {
-    if (monitoring) return; // already running
+    if (monitoring) return;
     setMonitoring(true);
-
-    // Fetch immediately
     fetchHealthData();
-
-    // Start interval (store id in ref)
     intervalRef.current = setInterval(fetchHealthData, 5000);
   };
 
@@ -44,53 +38,67 @@ const HealthMonitor = () => {
     setMonitoring(false);
   };
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, []);
 
   return (
-    <div className="p-6 bg-gradient-to-br from-purple-700 to-green-900 text-white rounded-2xl shadow-lg w-full max-w-md mx-auto mt-10 text-center">
-      <h2 className="text-2xl font-semibold mb-4">Health Monitoring</h2>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-green-100 to-blue-100">
+      <div className="bg-white rounded-2xl shadow-2xl w-[800px] p-8 text-center border border-green-200">
+        {/* 🩺 Title */}
+        <h2 className="text-3xl font-bold text-green-700 mb-8">
+          Health Monitoring Dashboard
+        </h2>
 
-      {!monitoring ? (
-        <button
-          onClick={startMonitoring}
-          className="bg-blue-500 px-4 py-2 rounded-md hover:bg-blue-600 transition"
-        >
-          Start Monitoring
-        </button>
-      ) : (
-        <button
-          onClick={stopMonitoring}
-          className="bg-red-500 px-4 py-2 rounded-md hover:bg-red-600 transition"
-        >
-          Stop Monitoring
-        </button>
-      )}
+        {/* 📊 2x2 Grid */}
+        <div className="grid grid-cols-2 gap-6 mb-8">
+          <div className="p-6 bg-green-50 border border-green-300 rounded-xl shadow-sm">
+            <p className="text-lg font-semibold text-gray-700">💓 Heart Rate</p>
+            <p className="text-3xl font-bold text-green-700 mt-2">
+              {data?.heartRate ?? 0} bpm
+            </p>
+          </div>
 
-      {/* Always show the grid (initially zeroes) */}
-      <div className="mt-6 grid grid-cols-1 gap-4">
-        <div className="p-4 bg-purple-800 rounded-lg shadow">
-          <p className="text-lg font-semibold">Heart Rate</p>
-          <p className="text-2xl">{data?.heartRate ?? 0} bpm</p>
+          <div className="p-6 bg-green-50 border border-green-300 rounded-xl shadow-sm">
+            <p className="text-lg font-semibold text-gray-700">🌡️ Temperature</p>
+            <p className="text-3xl font-bold text-green-700 mt-2">
+              {data?.temperature ?? 0} °C
+            </p>
+          </div>
+
+          <div className="p-6 bg-green-50 border border-green-300 rounded-xl shadow-sm">
+            <p className="text-lg font-semibold text-gray-700">🫁 Oxygen Level</p>
+            <p className="text-3xl font-bold text-green-700 mt-2">
+              {data?.oxygenLevel ?? 0} %
+            </p>
+          </div>
+
+          <div className="p-6 bg-green-50 border border-green-300 rounded-xl shadow-sm">
+            <p className="text-lg font-semibold text-gray-700">⏰ Last Update</p>
+            <p className="text-2xl font-bold text-green-700 mt-2">
+              {new Date(data?.timestamp ?? new Date()).toLocaleTimeString()}
+            </p>
+          </div>
         </div>
-        <div className="p-4 bg-green-800 rounded-lg shadow">
-          <p className="text-lg font-semibold">Temperature</p>
-          <p className="text-2xl">{data?.temperature ?? 0} °C</p>
-        </div>
-        <div className="p-4 bg-blue-800 rounded-lg shadow">
-          <p className="text-lg font-semibold">Oxygen Level</p>
-          <p className="text-2xl">{data?.oxygenLevel ?? 0} %</p>
-        </div>
-        <div className="p-4 bg-gray-800 rounded-lg shadow">
-          <p className="text-lg font-semibold">Last Update</p>
-          <p>{new Date(data?.timestamp ?? new Date()).toLocaleTimeString()}</p>
-        </div>
+
+        {/* 🟢 Button */}
+        {!monitoring ? (
+          <button
+            onClick={startMonitoring}
+            className="bg-green-600 text-white text-lg font-semibold px-8 py-3 rounded-full hover:bg-green-700 transition-all"
+          >
+            Start Monitoring
+          </button>
+        ) : (
+          <button
+            onClick={stopMonitoring}
+            className="bg-red-600 text-white text-lg font-semibold px-8 py-3 rounded-full hover:bg-red-700 transition-all"
+          >
+            Stop Monitoring
+          </button>
+        )}
       </div>
     </div>
   );

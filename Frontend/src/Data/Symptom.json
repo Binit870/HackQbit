@@ -1,0 +1,42 @@
+[
+  {
+    "disease": "Common Cold",
+    "symptoms": ["sneezing", "runny nose", "sore throat", "cough", "congestion"]
+  },
+  {
+    "disease": "Influenza (Flu)",
+    "symptoms": ["fever", "chills", "body ache", "fatigue", "headache"]
+  },
+  {
+    "disease": "COVID-19",
+    "symptoms": ["fever", "cough", "fatigue", "loss of taste", "difficulty breathing"]
+  },
+  {
+    "disease": "Asthma",
+    "symptoms": ["wheezing", "shortness of breath", "chest tightness", "cough", "fatigue"]
+  },
+  {
+    "disease": "Diabetes",
+    "symptoms": ["excessive thirst", "frequent urination", "fatigue", "blurred vision", "slow healing wounds"]
+  },
+  {
+    "disease": "Hypertension (High Blood Pressure)",
+    "symptoms": ["headache", "dizziness", "blurred vision", "nosebleeds", "fatigue"]
+  },
+  {
+    "disease": "Migraine",
+    "symptoms": ["headache", "nausea", "sensitivity to light", "vomiting", "visual disturbances"]
+  },
+  {
+    "disease": "Pneumonia",
+    "symptoms": ["fever", "cough", "chest pain", "shortness of breath", "fatigue"]
+  },
+  {
+    "disease": "Malaria",
+    "symptoms": ["fever", "chills", "headache", "nausea", "sweating"]
+  },
+  {
+    "disease": "Tuberculosis",
+    "symptoms": ["chronic cough", "fever", "night sweats", "weight loss", "fatigue"]
+  }
+]

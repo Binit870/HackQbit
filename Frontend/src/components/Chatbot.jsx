@@ -86,7 +86,7 @@ export default function Chatbot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-white  rounded-full shadow-xl hover:scale-110 g-green-700/20 transition-transform"
+          className="bg-white  rounded-full shadow-xl hover:scale-110 g-green-700/transition-transform"
         >
           <img
             src="/healthbot.png"
