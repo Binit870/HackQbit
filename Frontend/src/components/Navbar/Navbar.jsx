@@ -58,9 +58,12 @@ const Navbar = () => {
           <Link to="/community" className="hover:text-emerald-500 transition-colors">
             Community
           </Link>
+<<<<<<< HEAD
+=======
           <Link to="/healthmonitor" className="hover:text-emerald-500 transition-colors">
             HealthMonitor
           </Link>
+>>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
         </div>
 
         {/* Right Section: Search + Auth */}
@@ -75,7 +78,16 @@ const Navbar = () => {
 
           {token ? (
             <div className="flex items-center space-x-4">
+<<<<<<< HEAD
+              <Link
+                to="/notifications"
+                className="relative text-green-900 text-xl hover:text-emerald-500 transition-colors"
+              >
+                🔔
+              </Link>
+=======
               
+>>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
               <button
                 onClick={logout}
                 className="hidden md:block px-4 py-2 rounded-2xl bg-green-200/30 text-green-900 hover:bg-green-300/40 backdrop-blur-md transition-colors"
@@ -151,6 +163,14 @@ const Navbar = () => {
               Community
             </Link>
             <Link
+<<<<<<< HEAD
+              to="/notifications"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block hover:text-emerald-500 transition-colors"
+            >
+              Notifications
+            </Link>
+=======
               to="/healthmonitor"
               onClick={() => setIsMobileMenuOpen(false)}
               className="block hover:text-emerald-500 transition-colors"
@@ -158,6 +178,7 @@ const Navbar = () => {
               HealthMonitor
             </Link>
             
+>>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
           </div>
 
           {/* Mobile Search */}

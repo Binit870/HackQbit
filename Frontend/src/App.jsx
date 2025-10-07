@@ -1,16 +1,19 @@
+
+
 import { Routes, Route, useLocation } from "react-router-dom";
-import SymptomChecker from "./components/SymptomChecker/SymptomChecker";
-import Navbar from "./components/Navbar/Navbar";
-import Community from "./components/Community/Community";
-import ProtectedRoute from './components/ProtectedRoutes';
+import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Symptoms from "./components/symtoms/Symptoms";
+import Navbar from "./components/Navbar/Navbar";
+import ProtectedRoute from './components/ProtectedRoutes';
 import HealthMonitor from "./pages/HealthMonitor";
-import Report from "./pages/Report/Reports";
+import Report from "./pages/Report";
+import Community from "./components/Community/Community"
 import Consult from "./pages/Consultancy";
 import ConsultChat from "./pages/ConsultChat";
 import HealthAlerts from "./pages/HealthAlert";
+import Services from "./pages/Services";
 import Emergency from "./pages/Emergency";
 
 
@@ -33,15 +36,11 @@ function App() {
         <Routes>
           {/* Pages */}
           <Route path="/" element={<Home />} />
-
+          <Route path="/services" element={<Services />} />
+          <Route path="/emergency" element={<Emergency />} />
+   
           <Route path="/login" element={<Login />} />
-          <Route path="emergency" element={<Emergency />} />
-          <Route path="/healthalerts" element={<ProtectedRoute>
-
-            <HealthAlerts />
-          </ProtectedRoute>
-          } />
-
+          <Route path="/healthalerts" element={<HealthAlerts />} /> {/* ✅ Added new route */}
           <Route path="/signup" element={<Signup />} />
           <Route
             path="/healthmonitor"
@@ -63,7 +62,7 @@ function App() {
             path="/symptom"
             element={
               <ProtectedRoute>
-                <SymptomChecker />
+                <Symptoms />
               </ProtectedRoute>
             }
           />
@@ -91,10 +90,10 @@ function App() {
               </ProtectedRoute>
             }
           />
-
+          
         </Routes>
       </div>
-    </div>
+     </div>
   );
 }
 
