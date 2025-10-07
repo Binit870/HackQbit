@@ -1,32 +1,24 @@
 import React, { useState } from "react";
-// import "./Report.css";
-
-
-
-
+import { motion } from "framer-motion";
+import logo from "../assets/report.png";
 
 const Report = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    nationality: "",
-    phoneNumber: "",
     gender: "",
-    maritalStatus: "",
-    income: "",
-    exemptions: [],
-    signature: "",
+    reportFile: null,
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState({ type: "", text: "" });
+  const [analysis, setAnalysis] = useState(null);
+  const [analyzing, setAnalyzing] = useState(false);
+
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    if (type === "checkbox") {
-      setFormData((prev) => {
-        const updated = checked
-          ? [...prev.exemptions, value]
-          : prev.exemptions.filter((v) => v !== value);
-        return { ...prev, exemptions: updated };
-      });
+    const { name, value, type, files } = e.target;
+    if (type === "file") {
+      setFormData({ ...formData, reportFile: files[0] });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -34,178 +26,185 @@ const Report = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("✅ Medical Record Submitted Successfully!");
-    console.log("Form Data:", formData);
+    setIsLoading(true);
+    setMessage({ type: "", text: "" });
+
+    if (!formData.firstName || !formData.lastName || !formData.gender) {
+      setMessage({ type: "error", text: "❌ Please fill all required fields." });
+      setIsLoading(false);
+      return;
+    }
+
+    setMessage({ type: "success", text: "✅ Medical Record Submitted Successfully!" });
+
+    setFormData({
+      firstName: "",
+      lastName: "",
+      gender: "",
+      reportFile: null,
+    });
+
+    setAnalysis(null);
+
+    setTimeout(() => {
+      setMessage({ type: "", text: "" });
+      setIsLoading(false);
+    }, 3000);
+  };
+
+  const handleAnalyze = async () => {
+    if (!formData.reportFile) return alert("Upload a report first");
+    setAnalyzing(true);
+
+    const formDataObj = new FormData();
+    formDataObj.append("reportFile", formData.reportFile);
+
+    try {
+      const response = await fetch("http://localhost:5000/analyze", {
+        method: "POST",
+        body: formDataObj,
+      });
+      const data = await response.json();
+      setAnalysis(data.analyzed);
+    } catch (error) {
+      alert("Error analyzing report");
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
+  const formVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
   };
 
   return (
-    <div className="medical-container">
-      <h1>Medical Record</h1>
+    <div className="min-h-screen flex items-center justify-center relative text-white overflow-hidden">
+      {/* Background Image */}
+      <img
+        src={logo}
+        alt="abstract background"
+        className="absolute inset-0 w-full h-full object-cover opacity-60 z-0 pointer-events-none"
+      />
 
-      <form onSubmit={handleSubmit}>
-        {/* Personal Details */}
-        <section>
-          <h3>Personal Details</h3>
-          <div className="grid">
+      {/* Report Card */}
+      <motion.div
+        variants={formVariants}
+        initial="hidden"
+        animate="visible"
+        className="relative z-10 backdrop-blur-xl bg-white/10 p-6 rounded-2xl shadow-2xl border border-white/20 w-full max-w-md flex flex-col justify-center mx-auto mt-20"
+      >
+        {/* Medical Report Heading */}
+        <h1
+          className="text-2xl font-bold text-center mb-4 text-blue-100"
+          style={{
+            textShadow: "2px 2px 4px rgba(0,0,0,0.7), 0 0 10px rgba(0,123,255,0.5)",
+          }}
+        >
+          Medical Report
+        </h1>
+
+        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+          {/* Name */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <input
               type="text"
               name="firstName"
-              placeholder="First Name"
+              placeholder="First Name *"
               value={formData.firstName}
               onChange={handleChange}
+              className="px-4 py-2 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white transition-colors"
+              required
             />
             <input
               type="text"
               name="lastName"
-              placeholder="Last Name"
+              placeholder="Last Name *"
               value={formData.lastName}
               onChange={handleChange}
+              className="px-4 py-2 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white transition-colors"
+              required
             />
           </div>
 
-          <div className="grid">
+          {/* Gender */}
+          <div>
+            <p className="font-medium mb-1">Gender *</p>
+            {["Male", "Female", "Other"].map((option) => (
+              <label key={option} className="mr-3">
+                <input
+                  type="radio"
+                  name="gender"
+                  value={option}
+                  checked={formData.gender === option}
+                  onChange={handleChange}
+                  className="mr-1"
+                  required
+                />
+                {option}
+              </label>
+            ))}
+          </div>
+
+          {/* Upload Report (Below Gender) */}
+          <div>
+            <h3 className="text-lg font-semibold mb-1">Upload Report</h3>
             <input
-              type="text"
-              name="nationality"
-              placeholder="Nationality"
-              value={formData.nationality}
+              type="file"
+              accept="image/*,application/pdf"
               onChange={handleChange}
+              className="px-4 py-2 rounded-xl bg-white/20 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-white transition-colors w-full"
             />
-            <input
-              type="text"
-              name="phoneNumber"
-              placeholder="Phone Number"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-            />
-          </div>
-        </section>
-
-        {/* Status */}
-        <section>
-          <h3>Status</h3>
-          <div className="radio-group">
-            <label>
-              <input
-                type="radio"
-                name="gender"
-                value="Male"
-                checked={formData.gender === "Male"}
-                onChange={handleChange}
-              />
-              Male
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="gender"
-                value="Female"
-                checked={formData.gender === "Female"}
-                onChange={handleChange}
-              />
-              Female
-            </label>
+            {formData.reportFile && (
+              <p className="mt-2 text-white text-sm">{formData.reportFile.name} uploaded</p>
+            )}
+            <button
+              type="button"
+              onClick={handleAnalyze}
+              className="mt-2 px-5 py-2 rounded-xl bg-gradient-to-r from-green-400 to-green-700 text-white font-semibold text-lg hover:shadow-xl transition-all"
+              disabled={analyzing}
+            >
+              {analyzing ? "Analyzing..." : "Analyze Report"}
+            </button>
           </div>
 
-          <div className="radio-group">
-            <label>
-              <input
-                type="radio"
-                name="maritalStatus"
-                value="Single"
-                checked={formData.maritalStatus === "Single"}
-                onChange={handleChange}
-              />
-              Single
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="maritalStatus"
-                value="Married"
-                checked={formData.maritalStatus === "Married"}
-                onChange={handleChange}
-              />
-              Married
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="maritalStatus"
-                value="Divorced"
-                checked={formData.maritalStatus === "Divorced"}
-                onChange={handleChange}
-              />
-              Divorced
-            </label>
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="px-5 py-2 rounded-xl bg-gradient-to-r from-green-400 to-green-700 text-white font-semibold text-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                Submitting...
+              </div>
+            ) : (
+              "Submit Record"
+            )}
+          </button>
+        </form>
+
+        {/* Message */}
+        {message.text && (
+          <p
+            className={`mt-4 text-center text-sm font-medium ${
+              message.type === "success" ? "text-green-400" : "text-red-400"
+            }`}
+          >
+            {message.text}
+          </p>
+        )}
+
+        {/* Analyzed Data */}
+        {analysis && (
+          <div className="mt-6 p-4 bg-white/10 rounded-xl border border-white/20">
+            <h2 className="text-xl font-bold mb-2 text-blue-100">Analyzed Data</h2>
+            <p><strong>Name:</strong> {analysis.name}</p>
+            <p><strong>Age:</strong> {analysis.age}</p>
           </div>
-        </section>
-
-        {/* Income */}
-        <section>
-          <h3>Income</h3>
-          <input
-            type="text"
-            name="income"
-            placeholder="Enter Annual Income"
-            value={formData.income}
-            onChange={handleChange}
-          />
-        </section>
-
-        {/* Exemptions */}
-        <section>
-          <h3>Exemptions</h3>
-          <div className="checkbox-group">
-            <label>
-              <input
-                type="checkbox"
-                name="exemptions"
-                value="Medical"
-                checked={formData.exemptions.includes("Medical")}
-                onChange={handleChange}
-              />
-              Medical
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="exemptions"
-                value="Education"
-                checked={formData.exemptions.includes("Education")}
-                onChange={handleChange}
-              />
-              Education
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                name="exemptions"
-                value="Disability"
-                checked={formData.exemptions.includes("Disability")}
-                onChange={handleChange}
-              />
-              Disability
-            </label>
-          </div>
-        </section>
-
-        {/* Signature */}
-        <section>
-          <h3>Sign Here</h3>
-          <input
-            type="text"
-            name="signature"
-            placeholder="Type your name for signature"
-            value={formData.signature}
-            onChange={handleChange}
-          />
-        </section>
-
-        <button type="submit" className="submit-btn">
-          Submit Record
-        </button>
-      </form>
+        )}
+      </motion.div>
     </div>
   );
 };
