@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { MessageCircle, X, Send } from "lucide-react";
-import API from "../utils/Api"; // ✅ import your configured Axios instance
+import React, { useState, useRef } from "react";
+import { X, Send, Mic } from "lucide-react";
+import API from "../utils/Api"; // ✅ your axios instance
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,8 +9,52 @@ export default function Chatbot() {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef(null);
 
-  // ✅ API call directly using your axios instance
+  // 🎙️ Initialize voice recognition (Speech-to-Text)
+  const initSpeechRecognition = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Your browser doesn't support voice input 😞");
+      return null;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setInput(transcript);
+    };
+
+    return recognition;
+  };
+
+  const handleVoiceInput = () => {
+    if (!recognitionRef.current) {
+      recognitionRef.current = initSpeechRecognition();
+    }
+    if (recognitionRef.current) {
+      recognitionRef.current.start();
+    }
+  };
+
+  // 🔊 Voice output (Text-to-Speech)
+  const speak = (text) => {
+    if ("speechSynthesis" in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      utterance.rate = 1;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  // 💬 API call
   const sendChatMessage = async (message) => {
     try {
       const res = await API.post("/ai/chat", { message });
@@ -32,34 +76,42 @@ export default function Chatbot() {
     const reply = await sendChatMessage(userMessage);
 
     setMessages((prev) => [...prev, { from: "bot", text: reply }]);
+    speak(reply); // 🎧 Bot speaks the response
     setLoading(false);
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
-      {/* Floating Chat Icon */}
+    <div className="fixed bottom-8 right-8 z-50">
+      {/* Floating Chat Icon (🤖 with Stethoscope) */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-green-600 text-white p-4 rounded-full shadow-lg hover:bg-green-700 transition"
+          className="bg-white  rounded-full shadow-xl hover:scale-110 g-green-700/20 transition-transform"
         >
-          <MessageCircle size={28} />
+          <img
+            src="/healthbot.png"
+            alt="AI Health Assistant"
+            className="w-16 h-16 object-contain"
+          />
         </button>
       )}
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="w-80 md:w-96 h-96 bg-white rounded-2xl shadow-xl flex flex-col border border-gray-200 overflow-hidden">
+        <div className="w-[420px] h-[550px] bg-white rounded-3xl shadow-2xl flex flex-col border border-gray-200 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between bg-green-600 text-white px-4 py-3">
-            <h3 className="font-semibold">Health Assistant</h3>
-            <button onClick={() => setIsOpen(false)}>
-              <X size={20} />
+          <div className="flex items-center justify-between bg-green-600 text-white px-5 py-4">
+            <h3 className="font-semibold text-lg">Health Assistant</h3>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="hover:bg-green-700 p-1 rounded-full transition"
+            >
+              <X size={22} />
             </button>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+          <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50">
             {messages.map((msg, i) => (
               <div
                 key={i}
@@ -68,7 +120,7 @@ export default function Chatbot() {
                 }`}
               >
                 <div
-                  className={`px-3 py-2 rounded-lg text-sm ${
+                  className={`px-4 py-2.5 rounded-xl text-base max-w-[80%] ${
                     msg.from === "user"
                       ? "bg-green-600 text-white rounded-br-none"
                       : "bg-gray-200 text-gray-900 rounded-bl-none"
@@ -85,21 +137,31 @@ export default function Chatbot() {
           </div>
 
           {/* Input Area */}
-          <div className="flex items-center p-3 border-t border-gray-200">
+          <div className="flex items-center p-4 border-t border-gray-200 bg-white">
+            <button
+              onClick={handleVoiceInput}
+              className={`p-3 rounded-full ${
+                isListening ? "bg-green-500" : "bg-gray-200"
+              } hover:bg-green-500 text-white transition`}
+            >
+              <Mic size={20} />
+            </button>
+
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Type a message..."
-              className="flex-1 border border-gray-300 rounded-full px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="Type or speak a message..."
+              className="flex-1 mx-3 border border-gray-300 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
             />
+
             <button
               onClick={handleSend}
-              className="ml-2 bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition"
+              className="bg-green-600 text-white p-3 rounded-full hover:bg-green-700 transition"
               disabled={loading}
             >
-              <Send size={18} />
+              <Send size={20} />
             </button>
           </div>
         </div>
