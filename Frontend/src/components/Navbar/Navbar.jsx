@@ -58,6 +58,9 @@ const Navbar = () => {
           <Link to="/community" className="hover:text-emerald-500 transition-colors">
             Community
           </Link>
+          <Link to="/healthmonitor" className="hover:text-emerald-500 transition-colors">
+            HealthMonitor
+          </Link>
         </div>
 
         {/* Right Section: Search + Auth */}
@@ -72,12 +75,7 @@ const Navbar = () => {
 
           {token ? (
             <div className="flex items-center space-x-4">
-              <Link
-                to="/notifications"
-                className="relative text-green-900 text-xl hover:text-emerald-500 transition-colors"
-              >
-                🔔
-              </Link>
+              
               <button
                 onClick={logout}
                 className="hidden md:block px-4 py-2 rounded-2xl bg-green-200/30 text-green-900 hover:bg-green-300/40 backdrop-blur-md transition-colors"
@@ -153,12 +151,13 @@ const Navbar = () => {
               Community
             </Link>
             <Link
-              to="/notifications"
+              to="/healthmonitor"
               onClick={() => setIsMobileMenuOpen(false)}
               className="block hover:text-emerald-500 transition-colors"
             >
-              Notifications
+              HealthMonitor
             </Link>
+            
           </div>
 
           {/* Mobile Search */}
