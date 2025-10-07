@@ -82,22 +82,6 @@ export const doctorsData = [
     hospital: "AIIMS, New Delhi",
     bio: "Expert in treating brain, nerve, and spinal cord disorders such as epilepsy and stroke.",
   },
-  {
-    id: "d11",
-    name: "Dr. Manisha Joshi",
-    specialty: "Endocrinologist",
-    experience: "12 years",
-    hospital: "Manipal Hospital, Bangalore",
-    bio: "Specialized in diabetes, thyroid, and hormonal imbalance management.",
-  },
-  {
-    id: "d12",
-    name: "Dr. Nikhil Agarwal",
-    specialty: "Pulmonologist",
-    experience: "10 years",
-    hospital: "Care Hospital, Jaipur",
-    bio: "Focused on respiratory disorders like asthma, COPD, and sleep apnea.",
-  },
 ];
 
 const Consultancy = () => {
@@ -115,19 +99,31 @@ const Consultancy = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-900 via-cyan-800 to-cyan-950 text-white p-8">
-      <h1 className="text-4xl font-extrabold mb-8 text-center bg-gradient-to-r from-cyan-300 to-teal-400 bg-clip-text text-transparent">
+    <div className="min-h-screen relative overflow-hidden text-gray-800 p-8">
+      {/* 🌿 Background Image with slow zoom */}
+      <div
+        className="absolute inset-0 -z-20 bg-cover bg-center animate-slow-zoom"
+        style={{
+          backgroundImage: `url("/consult.jpg")`,
+        }}
+      ></div>
+
+      {/* 💚 Soft green gradient tint overlay */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-green-100/70 via-emerald-100/60 to-teal-100/60 backdrop-blur-[2px]"></div>
+
+      {/* Header */}
+      <h1 className="text-4xl font-extrabold mb-8 text-center bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent drop-shadow-sm">
         🩺 Find a Specialist Doctor
       </h1>
 
-      {/* Search Filter */}
-      <div className="flex justify-center mb-10">
+      {/* Search Input */}
+      <div className="flex justify-center mb-12">
         <input
           type="text"
           placeholder="Search by specialty..."
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="p-3 rounded-xl w-80 text-black focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          className="p-3 rounded-2xl w-80 bg-white/70 backdrop-blur-xl border border-gray-200 shadow-md text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent"
         />
       </div>
 
@@ -136,24 +132,24 @@ const Consultancy = () => {
         {filteredDoctors.map((doc) => (
           <div
             key={doc.id}
-            className="bg-white/10 border border-white/20 rounded-3xl p-6 text-center shadow-xl backdrop-blur-md hover:scale-[1.02] transition-all"
+            className="bg-white/75 backdrop-blur-xl border border-emerald-100 rounded-3xl p-6 text-center shadow-lg hover:shadow-2xl transition-all hover:scale-[1.02]"
           >
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-cyan-700 flex items-center justify-center text-2xl font-bold text-white shadow-md">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 flex items-center justify-center text-2xl font-bold text-white shadow-md">
               {doc.name
                 .split(" ")
                 .map((n) => n[0])
                 .join("")}
             </div>
-            <h2 className="text-xl font-semibold">{doc.name}</h2>
-            <p className="text-cyan-300 font-medium">{doc.specialty}</p>
-            <p className="text-gray-300 text-sm mt-2">{doc.hospital}</p>
-            <p className="text-gray-400 text-sm italic mt-1">
+            <h2 className="text-lg font-semibold text-gray-800">{doc.name}</h2>
+            <p className="text-emerald-600 font-medium">{doc.specialty}</p>
+            <p className="text-gray-600 text-sm mt-2">{doc.hospital}</p>
+            <p className="text-gray-500 text-sm italic mt-1">
               {doc.experience} experience
             </p>
-            <p className="text-gray-300 text-sm mt-3">{doc.bio}</p>
+            <p className="text-gray-700 text-sm mt-3">{doc.bio}</p>
             <button
               onClick={() => handleConnect(doc.id)}
-              className="mt-4 bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-2 rounded-full transition-all"
+              className="mt-5 bg-gradient-to-r from-emerald-500 to-teal-400 text-white px-6 py-2 rounded-full font-medium shadow-md hover:scale-105 transition-transform"
             >
               Connect
             </button>

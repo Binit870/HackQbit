@@ -79,33 +79,45 @@ const Report = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative text-gray-900 overflow-hidden">
-      {/* Background Image */}
-      <img
-        src={logo}
-        alt="abstract background"
-        className="absolute inset-0 w-full h-full object-cover opacity-60 z-0 pointer-events-none"
-      />
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden text-gray-900 bg-gradient-to-br from-emerald-50 via-green-100 to-teal-100">
 
-      {/* Report Card */}
+      {/* 🌿 Animated background overlay */}
+      <div
+        className="absolute inset-0 bg-cover bg-center animate-slow-zoom opacity-60"
+        style={{ backgroundImage: `url(${logo})` }}
+      ></div>
+
+      {/* 💫 Floating glowing shapes */}
+      <div className="absolute top-20 left-10 w-96 h-96 bg-emerald-300 rounded-full blur-3xl opacity-20 animate-float"></div>
+      <div className="absolute bottom-10 right-20 w-80 h-80 bg-teal-300 rounded-full blur-3xl opacity-25 animate-float-slow"></div>
+      <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-green-200 rounded-full blur-3xl opacity-10 animate-float"></div>
+
+      {/* 🩺 Glowing wave background */}
+      <div className="absolute bottom-0 left-0 w-[200%] h-40 z-0 opacity-25 animate-wave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none" className="w-full h-full">
+          <defs>
+            <pattern id="wavePattern" x="0" y="0" width="400" height="200" patternUnits="userSpaceOnUse">
+              <path d="M0,100 Q50,60 100,100 T200,100 T300,100 T400,100" stroke="#10b981" strokeWidth="2" fill="none" />
+            </pattern>
+          </defs>
+          <rect width="1600" height="200" fill="url(#wavePattern)" />
+        </svg>
+      </div>
+
+      {/* 🧾 Report Card */}
       <motion.div
         variants={formVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 backdrop-blur-xl bg-white/70 p-6 rounded-2xl shadow-2xl border border-white/80 w-full max-w-md flex flex-col justify-center mx-auto mt-20"
+        className="relative z-10 backdrop-blur-2xl bg-white/70 p-8 rounded-3xl shadow-2xl border border-white/80 w-full max-w-md flex flex-col justify-center mx-auto transition-all duration-300 hover:shadow-green-300/40"
       >
-        {/* Medical Report Heading */}
-        <h1
-          className="text-2xl font-bold text-center mb-4 text-blue-900"
-          style={{
-            textShadow: "2px 2px 4px rgba(255,255,255,0.7)",
-          }}
-        >
+        {/* Header */}
+        <h1 className="text-3xl font-extrabold text-center mb-6 text-green-800 drop-shadow-sm">
           Report Analyzer
         </h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-          {/* Name */}
+          {/* Names */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <input
               type="text"
@@ -113,7 +125,7 @@ const Report = () => {
               placeholder="First Name *"
               value={formData.firstName}
               onChange={handleChange}
-              className="px-4 py-2 rounded-xl bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+              className="px-4 py-2 rounded-xl bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
               required
             />
             <input
@@ -122,23 +134,23 @@ const Report = () => {
               placeholder="Last Name *"
               value={formData.lastName}
               onChange={handleChange}
-              className="px-4 py-2 rounded-xl bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+              className="px-4 py-2 rounded-xl bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
               required
             />
           </div>
 
           {/* Gender */}
           <div>
-            <p className="font-medium mb-1 text-gray-900">Gender *</p>
+            <p className="font-semibold mb-1 text-gray-800">Gender *</p>
             {["Male", "Female", "Other"].map((option) => (
-              <label key={option} className="mr-3 text-gray-900">
+              <label key={option} className="mr-3 text-gray-800">
                 <input
                   type="radio"
                   name="gender"
                   value={option}
                   checked={formData.gender === option}
                   onChange={handleChange}
-                  className="mr-1 accent-blue-500"
+                  className="mr-1 accent-green-600"
                   required
                 />
                 {option}
@@ -146,22 +158,22 @@ const Report = () => {
             ))}
           </div>
 
-          {/* Upload Report (Below Gender) */}
+          {/* Upload Report */}
           <div>
             <h3 className="text-lg font-semibold mb-1 text-gray-900">Upload Report</h3>
             <input
               type="file"
               accept="image/*,application/pdf"
               onChange={handleChange}
-              className="px-4 py-2 rounded-xl bg-white text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors w-full"
+              className="px-4 py-2 rounded-xl bg-white text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 w-full transition"
             />
             {formData.reportFile && (
-              <p className="mt-2 text-gray-800 text-sm">{formData.reportFile.name} uploaded</p>
+              <p className="mt-2 text-gray-700 text-sm">{formData.reportFile.name} uploaded</p>
             )}
             <button
               type="button"
               onClick={handleAnalyze}
-              className="mt-2 px-5 py-2 rounded-xl bg-gradient-to-r from-green-600 to-green-800 text-white font-semibold text-lg hover:shadow-xl transition-all"
+              className="mt-3 px-5 py-2 rounded-xl bg-gradient-to-r from-green-600 to-teal-600 text-white font-semibold text-lg hover:shadow-lg transition-all"
               disabled={analyzing}
             >
               {analyzing ? "Analyzing..." : "Analyze Report"}
@@ -171,7 +183,7 @@ const Report = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="px-5 py-2 rounded-xl bg-gradient-to-r from-green-600 to-green-800 text-white font-semibold text-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-3 px-5 py-2 rounded-xl bg-gradient-to-r from-green-600 to-teal-600 text-white font-semibold text-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -198,11 +210,11 @@ const Report = () => {
 
         {/* Analyzed Data */}
         {analysis && (
-          <div className="mt-6 p-4 bg-gray-200 rounded-xl border border-gray-300 text-gray-900">
-            <h2 className="text-xl font-bold mb-2 text-blue-800">Analyzed Data</h2>
+          <div className="mt-6 p-4 bg-gray-100 rounded-xl border border-gray-300 text-gray-900">
+            <h2 className="text-xl font-bold mb-2 text-green-800">Analyzed Data</h2>
             <p><strong>Name:</strong> {analysis.name}</p>
             <p><strong>Age:</strong> {analysis.age}</p>
- </div>
+          </div>
         )}
       </motion.div>
     </div>

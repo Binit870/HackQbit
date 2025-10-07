@@ -12,21 +12,27 @@ const ZERO_DATA = {
 const HealthMonitor = () => {
   const [data, setData] = useState(ZERO_DATA);
   const [monitoring, setMonitoring] = useState(false);
-  const intervalRef = useRef(null);
+  const intervalRef = useRef(null); // avoid stale state issues
 
   const fetchHealthData = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/health/monitor");
+      // Expect numeric values from backend
       if (res && res.data) setData(res.data);
     } catch (err) {
       console.error("Error fetching health data:", err);
+      // keep showing previous data; you can show an error indicator if needed
     }
   };
 
   const startMonitoring = () => {
-    if (monitoring) return;
+    if (monitoring) return; // already running
     setMonitoring(true);
+
+    // Fetch immediately
     fetchHealthData();
+
+    // Start interval (store id in ref)
     intervalRef.current = setInterval(fetchHealthData, 5000);
   };
 
@@ -38,9 +44,12 @@ const HealthMonitor = () => {
     setMonitoring(false);
   };
 
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     };
   }, []);
 
@@ -62,7 +71,7 @@ const HealthMonitor = () => {
           </div>
 
           <div className="p-6 bg-green-50 border border-green-300 rounded-xl shadow-sm">
-            <p className="text-lg font-semibold text-gray-700">🌡️ Temperature</p>
+            <p className="text-lg font-semibold text-gray-700">🌡 Temperature</p>
             <p className="text-3xl font-bold text-green-700 mt-2">
               {data?.temperature ?? 0} °C
             </p>

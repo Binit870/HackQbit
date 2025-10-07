@@ -80,7 +80,7 @@ const Navbar = () => {
               </Link>
               <button
                 onClick={logout}
-                className="hidden md:block px-4 py-2 rounded-2xl bg-green-200/30 text-green-900 hover:bg-green-300/40 backdrop-blur-md transition-colors"
+                className="hidden md:block px-4 py-2 rounded-2xl bg-green-200/30 text-green-900 hover:bg-green-300/40 backdrop-blur-md transition-colors text-white"
               >
                 Logout
               </button>
