@@ -1,6 +1,10 @@
 import User from "../models/User.js";
 
+<<<<<<< HEAD
 import bycrypt from "bcryptjs";
+=======
+import bcrypt from "bcryptjs";
+>>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
 import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
@@ -10,7 +14,11 @@ export const registerUser = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
         }
+<<<<<<< HEAD
         const hashedPassword = await bycrypt.hash(password, 10);
+=======
+        const hashedPassword = await bcrypt.hash(password, 10);
+>>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
         const newUser = new User({ name, username, email, password: hashedPassword });
         await newUser.save();
         res.status(201).json({ message: "User registered successfully" });
@@ -27,7 +35,11 @@ export const loginUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
+<<<<<<< HEAD
         const isPasswordCorrect = await bycrypt.compare(password, user.password);
+=======
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+>>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
         if (!isPasswordCorrect) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
@@ -40,7 +52,11 @@ export const loginUser = async (req, res) => {
                 name: user.name, 
                 username: user.username, 
                 email: user.email,
+<<<<<<< HEAD
                 profileImageUrl: user.profileImageUrl
+=======
+                
+>>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
             } 
         });
     }

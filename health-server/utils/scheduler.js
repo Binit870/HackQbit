@@ -1,6 +1,10 @@
 // utils/scheduler.js
 import cron from 'node-cron';
+<<<<<<< HEAD
 import Alert from '../models/alert.js';
+=======
+import Alert from '../models/Alert.js';
+>>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
 import { sendEmail } from './mailer.js';
 
 export function startScheduler() {
