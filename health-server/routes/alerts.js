@@ -1,6 +1,6 @@
 // routes/alerts.js
 import express from "express";
-import Alert from "../models/Alert.js";
+import Alert from "../models/alert.js";
 import { sendActivationEmail } from "../utils/mailer.js"; // ✅ new import
 
 const router = express.Router();
