@@ -2,11 +2,11 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
-import Symptoms from "./components/symtoms/Symptoms";
+import SymptomChecker from "./components/SymptomChecker/SymptomChecker";
 import Navbar from "./components/Navbar/Navbar";
 import ProtectedRoute from './components/ProtectedRoutes';
 import HealthMonitor from "./pages/HealthMonitor";
-import Report from "./pages/Report";
+import Report from "./pages/Report/Reports";
 import Community from "./components/Community/Community"
 import Consult from "./pages/Consultancy";
 import ConsultChat from "./pages/ConsultChat";
@@ -56,7 +56,7 @@ function App() {
             path="/symptom"
             element={
               <ProtectedRoute>
-                <Symptoms />
+                <SymptomChecker />
               </ProtectedRoute>
             }
           />

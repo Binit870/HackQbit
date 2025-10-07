@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const Symptoms = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,9 @@ const Symptoms = () => {
     regularMedicine: "",
   });
 
+  const [aiResponse, setAiResponse] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -16,9 +20,28 @@ const Symptoms = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Your entered details:\n" + JSON.stringify(formData, null, 2));
+
+    try {
+      setIsLoading(true);
+      setAiResponse(null);
+
+      const res = await axios.post("http://localhost:5000/api/symptoms/check", {
+        age: formData.age,
+        gender: formData.gender,
+        symptoms: formData.symptoms.split(",").map((s) => s.trim()),
+      });
+
+      setAiResponse(res.data);
+    } catch (error) {
+      console.error("AI API Error:", error);
+      setAiResponse({
+        error: "⚠️ Something went wrong while fetching AI response.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleViewHistory = () => {
@@ -27,7 +50,7 @@ const Symptoms = () => {
 
   return (
     <div
-      className="relative h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{
         backgroundImage: "url('/heal-removebg-preview.png')",
         backgroundSize: "1300px auto",
@@ -37,21 +60,20 @@ const Symptoms = () => {
         backgroundColor: "#ecfdf5",
       }}
     >
-      {/* 🌿 Left Side Text + Image Section */}
-<div className="absolute left-12 top-1/2 -translate-y-1/2 z-10 max-w-md">
-  <h1
-    className="text-6xl font-extrabold leading-tight drop-shadow-lg 
+      {/* 🌿 Left Section */}
+      <div className="absolute left-12 top-1/2 -translate-y-1/2 z-10 max-w-md">
+        <h1
+          className="text-6xl font-extrabold leading-tight drop-shadow-lg 
                bg-gradient-to-r from-green-500 via-green-500 to-green-700 
                bg-clip-text text-transparent border-b-4 border-green-700"
-  >
-    AI POWERED<br />SYMPTOM CHECKER
-  </h1>
+        >
+          AI POWERED<br />SYMPTOM CHECKER
+        </h1>
 
-  <p className="mt-4 text-lg text-gray-700 font-medium">
-    Enter your symptoms and AI will suggest possible conditions.
-  </p>
+        <p className="mt-4 text-lg text-gray-700 font-medium">
+          Enter your symptoms and let our AI analyze them for you.
+        </p>
 
-        {/* 💚 Image Below Text */}
         <div className="mt-10">
           <img
             src="/med-removebg-preview.png"
@@ -61,7 +83,7 @@ const Symptoms = () => {
         </div>
       </div>
 
-      {/* 🌿 Glassmorphism Form Card (centered) */}
+      {/* 🌿 Form Section */}
       <div className="relative z-10 backdrop-blur-xl bg-white/30 border border-white/40 shadow-2xl rounded-3xl p-6 w-full max-w-lg mx-4">
         <h2 className="text-3xl font-bold text-center text-green-800 mb-6 drop-shadow-md">
           Check Your Symptoms
@@ -148,15 +170,16 @@ const Symptoms = () => {
             />
           </div>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <button
             type="submit"
             className="w-full bg-gradient-to-r from-green-400 to-emerald-600 text-white font-semibold py-2.5 rounded-lg shadow-lg hover:from-green-500 hover:to-emerald-700 transition-all"
+            disabled={isLoading}
           >
-            Check Symptoms
+            {isLoading ? "Analyzing..." : "Check Symptoms"}
           </button>
 
-          {/* 🌿 View History Button */}
+          {/* History Button */}
           <button
             type="button"
             onClick={handleViewHistory}
@@ -165,6 +188,46 @@ const Symptoms = () => {
             View History
           </button>
         </form>
+
+        {/* AI Response */}
+        {aiResponse && (
+          <div className="mt-6 p-4 bg-white/70 border border-gray-300 rounded-xl shadow-md">
+            <h3 className="text-lg font-semibold text-green-800 mb-2">
+              AI Analysis:
+            </h3>
+
+            {aiResponse.error && (
+              <p className="text-red-600">{aiResponse.error}</p>
+            )}
+
+            {aiResponse.conditions && (
+              <ul className="space-y-3">
+                {aiResponse.conditions.map((cond, idx) => (
+                  <li key={idx} className="border-b pb-2">
+                    <p className="font-semibold text-gray-900">{cond.name}</p>
+                    <p className="text-sm text-gray-700">{cond.description}</p>
+                    <p className="text-sm text-gray-800">
+                      <b>Urgency:</b> {cond.urgency_level}
+                    </p>
+                    {cond.treatments && (
+                      <p className="text-sm text-gray-800">
+                        <b>Treatments:</b> {cond.treatments}
+                      </p>
+                    )}
+                    {cond.medicine && (
+                      <p className="text-sm text-gray-800">
+                        <b>Medicine:</b> {cond.medicine}
+                      </p>
+                    )}
+                    <p className="text-sm text-green-700 mt-1">
+                      <b>Advice:</b> {cond.cta}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

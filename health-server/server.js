@@ -8,7 +8,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import symptomRoutes from "./routes/symptomRoutes.js";
 import healthRoutes from "./routes/healthRoutes.js";
-
+import reportRoutes from "./routes/reportRoutes.js";
 // ✅ Added for Alerts Feature
 import alertRoutes from "./routes/alerts.js";
 import { startScheduler } from "./utils/scheduler.js";
@@ -83,6 +83,7 @@ app.use("/api/ai", aiRoutes);
 app.use("/api/community", communityRoutes(io)); // keep socket for community only
 app.use("/api/consult", consultRoutes); // ❌ no socket here (JSON-based doctor chat)
 app.use("/api/health", healthRoutes);
+app.use("/api/reports", reportRoutes);
 
 // ✅ Added new routes for alert preferences
 app.use("/api/alerts", alertRoutes);
