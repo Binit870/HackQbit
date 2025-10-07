@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Symptoms from "./components/symtoms/Symptoms";
 import Navbar from "./components/Navbar/Navbar";
 import Report from "./pages/Report";
+import Emergency from "./pages/Emergency";
 
 function App() {
   const location = useLocation();
@@ -30,7 +31,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/report" element={<Report />} />
-          <Route path="/symtoms" element={<symtoms/>}/>
+          <Route path="/symtoms" element={<Symptoms/>}/>
+          <Route path="/emergency" element={<Emergency/>}/>
         </Routes>
       </div>
     // </div>
