@@ -1,7 +1,10 @@
+
+
 import { Routes, Route, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
+import Symptoms from "./components/symtoms/Symptoms";
 import Navbar from "./components/Navbar/Navbar";
 import HealthMonitor from "./pages/HealthMonitor";
 
@@ -20,17 +23,20 @@ function App() {
       {/* Show Navbar conditionally */}
       {!hideNavbar && <Navbar />}
 
-      <div className={`flex-grow flex flex-col ${!hideNavbar ? "pt-16" : ""}`}>
+      {/* <div className={flex-grow flex flex-col ${!hideNavbar ? "pt-16" : ""}}> */}
         <Routes>
           {/* Pages */}
           <Route path="/" element={<Home />} />
           <Route path="/healthmonitor" element={<HealthMonitor />} /> {/* ✅ Added new route */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/report" element={<Report />} />
+          <Route path="/symtoms" element={<symtoms/>}/>
         </Routes>
       </div>
-    </div>
+    // </div>
   );
 }
+
 
 export default App;
