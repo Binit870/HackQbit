@@ -13,6 +13,7 @@ import Community from "./components/Community/Community"
 import Consult from "./pages/Consultancy";
 import ConsultChat from "./pages/ConsultChat";
 import HealthAlerts from "./pages/HealthAlert";
+import Services from "./pages/Services";
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
         <Routes>
           {/* Pages */}
           <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
    
           <Route path="/login" element={<Login />} />
           <Route path="/healthalerts" element={<HealthAlerts />} /> {/* ✅ Added new route */}
