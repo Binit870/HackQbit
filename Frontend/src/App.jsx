@@ -14,6 +14,7 @@ import Consult from "./pages/Consultancy";
 import ConsultChat from "./pages/ConsultChat";
 import HealthAlerts from "./pages/HealthAlert";
 import Services from "./pages/Services";
+import Emergency from "./pages/Emergency";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           {/* Pages */}
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/emergency" element={<Emergency />} />
    
           <Route path="/login" element={<Login />} />
           <Route path="/healthalerts" element={<HealthAlerts />} /> {/* ✅ Added new route */}
