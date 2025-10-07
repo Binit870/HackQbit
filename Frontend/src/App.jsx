@@ -1,7 +1,10 @@
+
+
 import { Routes, Route, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
+import Symptoms from "./components/symtoms/Symptoms";
 import Navbar from "./components/Navbar/Navbar";
 
 function App() {
@@ -25,10 +28,11 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/report" element={<Symptoms />} />
         </Routes>
       </div>
     </div>
   );
-}
+
 
 export default App;
