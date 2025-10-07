@@ -1,7 +1,10 @@
+
+
 import { Routes, Route, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
+import Symptoms from "./components/symtoms/Symptoms";
 import Navbar from "./components/Navbar/Navbar";
 import Report from "./pages/Report";
 
@@ -27,11 +30,12 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/report" element={<Report />} />
-
+          <Route path="/symtoms" element={<symtoms/>}/>
         </Routes>
       </div>
     // </div>
   );
 }
+
 
 export default App;
