@@ -12,6 +12,8 @@ import Report from "./pages/Report";
 import Community from "./components/Community/Community"
 import Consult from "./pages/Consultancy";
 import ConsultChat from "./pages/ConsultChat";
+import HealthAlerts from "./pages/HealthAlert";
+
 
 function App() {
   const location = useLocation();
@@ -34,6 +36,7 @@ function App() {
           <Route path="/" element={<Home />} />
    
           <Route path="/login" element={<Login />} />
+          <Route path="/healthalerts" element={<HealthAlerts />} /> {/* ✅ Added new route */}
           <Route path="/signup" element={<Signup />} />
           <Route
             path="/healthmonitor"
