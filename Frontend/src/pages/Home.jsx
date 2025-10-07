@@ -1,5 +1,6 @@
 import React from "react";
 import { ShieldCheck, Leaf } from "lucide-react";
+import Chatbot from "../components/Chatbot";
 
 export default function HeroSection() {
   return (
@@ -40,6 +41,7 @@ export default function HeroSection() {
           </button>
         </div>
       </header>
+      <Chatbot />
     </div>
   );
 }
