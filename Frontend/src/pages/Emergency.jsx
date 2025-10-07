@@ -51,7 +51,7 @@ const Emergency = () => {
     contactNumber: "",
     emergencyType: "",
     description: "",
-    emergencyContactName: "", // Merged SOS contact fields
+    emergencyContactName: "",
     emergencyContactNumber: "",
   });
 
@@ -70,32 +70,30 @@ const Emergency = () => {
     setMessage({ type: "", text: "" });
     setNotifiedDoctor(null);
 
-    // Consolidated validation for all form fields
     if (
       !formData.firstName ||
-      !formData.lastName ||
       !formData.contactNumber ||
-      !formData.emergencyType ||
-      !formData.description ||
       !formData.emergencyContactName ||
       !formData.emergencyContactNumber
     ) {
-      setMessage({ type: "error", text: "❌ Please fill all required fields, including SOS contact." });
+      setMessage({
+        type: "error",
+        text: "❌ Please fill all required fields, including SOS contact.",
+      });
       setIsLoading(false);
       return;
     }
 
-    const onlineDoctors = doctorsData.filter(doc => doc.status === 'online');
-    const selectedDoctor = onlineDoctors[Math.floor(Math.random() * onlineDoctors.length)];
-    
-    let statusMessage = selectedDoctor ? "Doctor is available" : "No doctor is available";
+    const onlineDoctors = doctorsData.filter((doc) => doc.status === "online");
+    const selectedDoctor =
+      onlineDoctors[Math.floor(Math.random() * onlineDoctors.length)];
 
-    console.log("Emergency submitted with all details:", {
-      ...formData,
-      notifiedDoctor: selectedDoctor,
+    setMessage({
+      type: "success",
+      text: `✅ Emergency submitted! ${
+        selectedDoctor ? "Doctor is available" : "No doctor available"
+      }`,
     });
-
-    setMessage({ type: "success", text: `✅ Emergency submitted! ${statusMessage}` });
     setNotifiedDoctor(selectedDoctor);
 
     setFormData({
@@ -107,7 +105,7 @@ const Emergency = () => {
       emergencyContactName: "",
       emergencyContactNumber: "",
     });
-    
+
     setIsLoading(false);
     setTimeout(() => setMessage({ type: "", text: "" }), 5000);
   };
@@ -148,10 +146,7 @@ const Emergency = () => {
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-    },
+    visible: { y: 0, opacity: 1 },
   };
 
   return (
@@ -163,6 +158,7 @@ const Emergency = () => {
       />
       <div className="absolute inset-0 bg-black bg-opacity-40 z-0"></div>
 
+      {/* === MAIN SCREEN === */}
       {!showDoctorPage && !showEmergencyForm ? (
         <motion.div
           variants={containerVariants}
@@ -170,150 +166,156 @@ const Emergency = () => {
           animate="visible"
           className="relative z-10 flex flex-col lg:flex-row items-stretch justify-center gap-8 w-full max-w-6xl mx-auto py-12"
         >
+          {/* Emergency Call Box */}
           <motion.div
             variants={itemVariants}
-            className="flex-1 min-w-[300px] max-w-[400px] bg-transparent backdrop-blur-md p-8 rounded-3xl text-center shadow-2xl hover:shadow-3xl border border-white/40 flex flex-col items-center justify-center transform hover:scale-105 transition-all duration-300 ease-in-out"
+            className="flex-1 bg-transparent backdrop-blur-md p-8 rounded-3xl text-center shadow-2xl border border-white/40"
           >
-            <img src={ambulanceIcon} alt="Ambulance" className="w-28 h-28 mb-6 filter drop-shadow-lg" />
-            <h2 className="text-3xl font-extrabold text-white mb-3">Emergency Call</h2>
+            <img
+              src={ambulanceIcon}
+              alt="Ambulance"
+              className="w-28 h-28 mb-6 filter drop-shadow-lg mx-auto"
+            />
+            <h2 className="text-3xl font-extrabold text-white mb-3">
+              Emergency Call
+            </h2>
             <p className="text-lg text-white mb-6 leading-relaxed">
-              For immediate medical assistance, dial our dedicated emergency line. Help is on the way!
+              For immediate medical help, tap below to call the emergency line.
             </p>
+
+            {/* Direct Call Button */}
             <a
-              href="tel:+911234567890"
+              href="tel:112"
               className="inline-flex items-center justify-center bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold py-3 px-8 rounded-full text-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1"
             >
-              <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 1.968a1 1 0 01-.108.974l-1.65 1.65a9.004 9.004 0 005.972 5.972l1.65-1.65a1 1 0 01.974-.108l1.967.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
+              <svg
+                className="w-6 h-6 mr-3"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 1.968a1 1 0 01-.108.974l-1.65 1.65a9.004 9.004 0 005.972 5.972l1.65-1.65a1 1 0 01.974-.108l1.967.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
               </svg>
               Call 112
             </a>
           </motion.div>
 
+          {/* Emergency Actions */}
           <motion.div
             variants={itemVariants}
-            className="flex-1 min-w-[300px] max-w-lg bg-white/10 backdrop-blur-xl p-8 rounded-3xl shadow-2xl hover:shadow-3xl border border-white/20 flex flex-col items-center justify-center transform hover:scale-105 transition-all duration-300 ease-in-out"
+            className="flex-1 bg-white/10 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/20 flex flex-col items-center"
           >
             <h1
-              className="text-3xl font-extrabold text-red-300 text-center mb-8"
-              style={{
-                textShadow: "0px 0px 8px rgba(255,0,0,0.6)",
-              }}
+              className="text-3xl font-extrabold text-red-300 mb-8"
+              style={{ textShadow: "0px 0px 8px rgba(255,0,0,0.6)" }}
             >
               Emergency Actions
             </h1>
-            
+
             <motion.button
               onClick={handleOpenEmergencyForm}
-              className="w-full px-5 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out flex items-center justify-center mb-4"
+              className="w-full px-5 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-lg shadow-lg mb-4"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               Submit Emergency
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
             </motion.button>
-            
+
             <motion.button
               onClick={handleOpenDoctors}
-              className="w-full px-5 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out flex items-center justify-center"
+              className="w-full px-5 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Find Available Doctors/Contact
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+              Find Available Doctors / Contact
             </motion.button>
           </motion.div>
         </motion.div>
       ) : showDoctorPage ? (
+        /* === DOCTOR CONTACT PAGE === */
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative z-10 w-full max-w-2xl mx-auto backdrop-blur-xl bg-white/10 p-8 rounded-3xl shadow-2xl border border-white/20 flex flex-col"
+          className="relative z-10 w-full max-w-2xl mx-auto backdrop-blur-xl bg-white/10 p-8 rounded-3xl shadow-2xl border border-white/20"
         >
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-3xl font-extrabold text-red-300">Available Doctors/Contact</h2>
+            <h2 className="text-3xl font-extrabold text-red-300">
+              Available Doctors / Contact
+            </h2>
             <motion.button
               onClick={handleBackToMain}
               className="p-2 rounded-full bg-gray-600 hover:bg-gray-700 text-white transition-colors"
               whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
+              ←
             </motion.button>
           </div>
-          
-          <motion.div
-            className="space-y-4"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {getRandomDoctors().map((doctor) => (
-              <motion.div
-                key={doctor.doctor_id}
-                variants={itemVariants}
-                className="p-4 rounded-xl bg-white/10 border border-white/30 hover:bg-white/20 transition-colors duration-200"
-              >
-                <h4 className="font-bold text-lg">Name: {doctor.name}</h4>
-                <p className="text-sm text-gray-300">Specialization: {doctor.specialization}</p>
-                <p className="text-sm text-gray-300">Contact: <a href={`tel:${doctor.contact_number}`} className="underline text-blue-300 hover:text-blue-200">{doctor.contact_number}</a></p>
-              </motion.div>
-            ))}
-          </motion.div>
+
+          {getRandomDoctors().map((doctor) => (
+            <motion.div
+              key={doctor.doctor_id}
+              className="p-4 rounded-xl bg-white/10 border border-white/30 hover:bg-white/20 transition-colors mb-3"
+            >
+              <h4 className="font-bold text-lg">Name: {doctor.name}</h4>
+              <p className="text-sm text-gray-300">
+                Specialization: {doctor.specialization}
+              </p>
+              <p className="text-sm text-gray-300">
+                Contact:{" "}
+                <a
+                  href={`tel:${doctor.contact_number}`}
+                  className="underline text-blue-300 hover:text-blue-200"
+                >
+                  {doctor.contact_number}
+                </a>
+              </p>
+            </motion.div>
+          ))}
         </motion.div>
       ) : (
+        /* === EMERGENCY FORM === */
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative z-10 w-full max-w-2xl mx-auto backdrop-blur-xl bg-white/10 p-8 rounded-3xl shadow-2xl border border-white/20 flex flex-col"
+          className="relative z-10 w-full max-w-2xl mx-auto backdrop-blur-xl bg-white/10 p-8 rounded-3xl shadow-2xl border border-white/20"
         >
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-3xl font-extrabold text-red-300">Emergency  Form</h2>
+            <h2 className="text-3xl font-extrabold text-red-300">
+              Emergency Form
+            </h2>
             <motion.button
               onClick={handleBackToMain}
               className="p-2 rounded-full bg-gray-600 hover:bg-gray-700 text-white transition-colors"
               whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
+              ←
             </motion.button>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col space-y-5">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                name="firstName"
-                placeholder="Enter Your  Name *"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="input-field text-white"
-                required
-              />
-    
-            </div>
+            <input
+              type="text"
+              name="firstName"
+              placeholder="Your Name *"
+              value={formData.firstName}
+              onChange={handleChange}
+              className="input-field text-white"
+              required
+            />
+
             <input
               type="text"
               name="contactNumber"
-              placeholder="Contact Number *"
+              placeholder="Your Contact Number *"
               value={formData.contactNumber}
               onChange={handleChange}
               className="input-field text-white"
               required
             />
-           
-            <div className="flex flex-col space-y-2">
-              <h3 className="font-bold text-lg mt-4">Emergency SOS Contact</h3>
+
+            <div>
+              <h3 className="font-bold text-lg mt-4 mb-2">SOS Contact</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input
                   type="text"
@@ -334,22 +336,24 @@ const Emergency = () => {
                   required
                 />
               </div>
+              {/* Direct SOS Call Button */}
+              {formData.emergencyContactNumber && (
+                <a
+                  href={`tel:${formData.emergencyContactNumber}`}
+                  className="block mt-4 text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all"
+                >
+                  📞 Call SOS Contact
+                </a>
+              )}
             </div>
+
             <motion.button
               whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
               type="submit"
-              className="mt-6 w-full px-5 py-3 rounded-xl bg-gradient-to-r from-red-500 to-red-700 text-white font-bold text-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-6 w-full px-5 py-3 rounded-xl bg-gradient-to-r from-red-500 to-red-700 text-white font-bold text-xl shadow-lg hover:shadow-xl transition-all"
               disabled={isLoading}
             >
-              {isLoading ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
-                  Submitting...
-                </div>
-              ) : (
-                "Submit Emergency"
-              )}
+              {isLoading ? "Submitting..." : "Submit Emergency"}
             </motion.button>
           </form>
 
@@ -363,9 +367,10 @@ const Emergency = () => {
               }`}
             >
               <p>{message.text}</p>
-              {notifiedDoctor && message.type === "success" && (
+              {notifiedDoctor && (
                 <p className="mt-2 text-sm text-gray-300">
-                  A notification has been sent to **{notifiedDoctor.name}** ({notifiedDoctor.specialization}).
+                  Notified <b>{notifiedDoctor.name}</b> (
+                  {notifiedDoctor.specialization})
                 </p>
               )}
             </motion.div>
