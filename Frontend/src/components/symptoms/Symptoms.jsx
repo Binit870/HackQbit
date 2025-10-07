@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import symptomData from "../../data/symptom.json";
 
-
 const Symptoms = () => {
   const [formData, setFormData] = useState({
     age: "",
@@ -12,6 +11,7 @@ const Symptoms = () => {
   });
 
   const [result, setResult] = useState(null);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -44,20 +44,28 @@ const Symptoms = () => {
 
     if (bestMatch && highestMatchCount > 0) {
       setResult(
-        `🩺 Based on your symptoms, the most likely condition is: **${bestMatch}**`
+        `🩺 Based on your symptoms, the most likely condition is: ${bestMatch}.`
       );
     } else {
-      setResult("⚠️ No matching disease found. Please check your symptoms.");
+      setResult(
+        "⚠️ No matching disease found. Please check your entered symptoms or consult a doctor for proper diagnosis."
+      );
     }
+
+    setShowDisclaimer(true);
   };
 
   const handleViewHistory = () => {
     alert("🕘 View History feature coming soon!");
   };
 
+  const closeDisclaimer = () => {
+    setShowDisclaimer(false);
+  };
+
   return (
     <div
-      className="relative h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden p-6"
       style={{
         backgroundImage: "url('/heal-removebg-preview.png')",
         backgroundSize: "1300px auto",
@@ -70,7 +78,7 @@ const Symptoms = () => {
       {/* 🌿 Left Side Text + Image Section */}
       <div className="absolute left-12 top-1/2 -translate-y-1/2 z-10 max-w-md">
         <h1
-          className="text-6xl font-extrabold leading-tight drop-shadow-lg 
+          className="text-5xl font-extrabold leading-tight drop-shadow-lg 
                      bg-gradient-to-r from-green-500 via-green-500 to-green-700 
                      bg-clip-text text-transparent border-b-4 border-green-700"
         >
@@ -81,23 +89,22 @@ const Symptoms = () => {
           Enter your symptoms and AI will suggest possible conditions.
         </p>
 
-        {/* 💚 Image Below Text */}
         <div className="mt-10">
           <img
             src="/med-removebg-preview.png"
             alt="Health Illustration"
-            className="w-[350px] h-[350px] object-contain drop-shadow-2xl"
+            className="w-[300px] h-[300px] object-contain drop-shadow-2xl"
           />
         </div>
       </div>
 
       {/* 🌿 Glassmorphism Form Card */}
-      <div className="relative z-10 backdrop-blur-xl bg-white/30 border border-white/40 shadow-2xl rounded-3xl p-6 w-full max-w-lg mx-4">
-        <h2 className="text-3xl font-bold text-center text-green-800 mb-6 drop-shadow-md">
+      <div className="relative z-10 backdrop-blur-xl bg-white/40 border border-white/40 shadow-2xl rounded-3xl p-6 w-full max-w-lg mx-4">
+        <h2 className="text-3xl font-bold text-center text-green-800 mb-4 drop-shadow-md">
           Check Your Symptoms
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3">
           {/* Age */}
           <div>
             <label className="block text-gray-700 font-medium mb-1">
@@ -109,7 +116,7 @@ const Symptoms = () => {
               value={formData.age}
               onChange={handleChange}
               placeholder="e.g. 25"
-              className="w-full border border-gray-300 rounded-lg p-2.5 bg-white/70 focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="w-full border border-gray-300 rounded-lg p-2 bg-white/70 focus:outline-none focus:ring-2 focus:ring-green-400"
               required
             />
           </div>
@@ -123,7 +130,7 @@ const Symptoms = () => {
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg p-2.5 bg-white/70 focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="w-full border border-gray-300 rounded-lg p-2 bg-white/70 focus:outline-none focus:ring-2 focus:ring-green-400"
               required
             >
               <option value="">-- Select Gender --</option>
@@ -143,7 +150,7 @@ const Symptoms = () => {
               value={formData.symptoms}
               onChange={handleChange}
               placeholder="e.g. fever, headache, cough..."
-              className="w-full border border-gray-300 rounded-lg p-2.5 h-24 bg-white/70 focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="w-full border border-gray-300 rounded-lg p-2 h-20 bg-white/70 focus:outline-none focus:ring-2 focus:ring-green-400"
               required
             ></textarea>
           </div>
@@ -159,7 +166,7 @@ const Symptoms = () => {
               value={formData.existingDisease}
               onChange={handleChange}
               placeholder="e.g. diabetes, asthma"
-              className="w-full border border-gray-300 rounded-lg p-2.5 bg-white/70 focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="w-full border border-gray-300 rounded-lg p-2 bg-white/70 focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
 
@@ -174,35 +181,51 @@ const Symptoms = () => {
               value={formData.regularMedicine}
               onChange={handleChange}
               placeholder="e.g. Metformin, Vitamin D"
-              className="w-full border border-gray-300 rounded-lg p-2.5 bg-white/70 focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="w-full border border-gray-300 rounded-lg p-2 bg-white/70 focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-green-400 to-emerald-600 text-white font-semibold py-2.5 rounded-lg shadow-lg hover:from-green-500 hover:to-emerald-700 transition-all"
-          >
-            Check Symptoms
-          </button>
+          {/* ✅ Buttons in One Row */}
+          <div className="flex gap-3 mt-3">
+            <button
+              type="submit"
+              className="flex-1 bg-gradient-to-r from-green-400 to-emerald-600 text-white font-semibold py-2 rounded-lg shadow-md hover:from-green-500 hover:to-emerald-700 transition-all"
+            >
+              Check Symptoms
+            </button>
 
-          {/* View History Button */}
-          <button
-            type="button"
-            onClick={handleViewHistory}
-            className="w-full mt-3 backdrop-blur-md bg-white/30 border border-white/40 text-green-800 font-semibold py-2.5 rounded-lg shadow-md hover:bg-white/50 transition-all"
-          >
-            View History
-          </button>
-        </form>
-
-        {/* 🧠 Result Display */}
-        {result && (
-          <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800 font-semibold shadow">
-            {result}
+            <button
+              type="button"
+              onClick={handleViewHistory}
+              className="flex-1 backdrop-blur-md bg-white/40 border border-white/40 text-green-800 font-semibold py-2 rounded-lg shadow-md hover:bg-white/60 transition-all"
+            >
+              View History
+            </button>
           </div>
-        )}
+        </form>
       </div>
+
+      {/* ⚠️ Popup Disclaimer Modal */}
+      {showDisclaimer && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 animate-fade-in">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 text-center">
+            <h3 className="text-xl font-bold text-yellow-700 mb-3">
+              ⚠️ Medical Disclaimer
+            </h3>
+            <p className="text-gray-800 mb-4">{result}</p>
+            <p className="text-sm text-gray-600 mb-4">
+              This is not a medical diagnosis. Please consult a certified doctor
+              for accurate medical advice.
+            </p>
+            <button
+              onClick={closeDisclaimer}
+              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-green-700 transition-all"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -27,8 +27,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-green-700/20 border-b border-green-300/30 shadow-lg">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+    <nav className="fixed  top-0 left-0 w-full z-50 backdrop-blur-xl bg-green-700/20 border-b border-green-300/30 shadow-lg">
+      <div className="max-w-7xl  mx-auto flex items-center justify-between px-4 py-3">
         {/* Left Section: Logo */}
         <div className="flex items-center space-x-4">
           <Link
