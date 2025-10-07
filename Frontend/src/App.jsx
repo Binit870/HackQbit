@@ -6,13 +6,15 @@ import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import Symptoms from "./components/symtoms/Symptoms";
 import Navbar from "./components/Navbar/Navbar";
+import ProtectedRoute from './components/ProtectedRoutes';
+import HealthMonitor from "./pages/HealthMonitor";
 import Report from "./pages/Report";
 import Emergency from "./pages/Emergency";
 
 function App() {
   const location = useLocation();
 
-  // Hide Navbar on Login and Signup routes
+  // Hide Navbar on Login and Signup routes"
   const pathsWithoutNavbar = new Set(["/login", "/signup"]);
   const normalizedPathname = location.pathname.endsWith("/")
     ? location.pathname.slice(0, -1)
@@ -20,14 +22,15 @@ function App() {
   const hideNavbar = pathsWithoutNavbar.has(normalizedPathname.toLowerCase());
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-cyan-900 to-blue-900 font-inter">
+    <div className="flex flex-col min-h-screen font-inter">
       {/* Show Navbar conditionally */}
       {!hideNavbar && <Navbar />}
 
-      {/* <div className={flex-grow flex flex-col ${!hideNavbar ? "pt-16" : ""}}> */}
+      <div className={`flex-grow flex flex-col ${!hideNavbar ? "pt-16" : ""}`}>
         <Routes>
           {/* Pages */}
           <Route path="/" element={<Home />} />
+   
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/report" element={<Report />} />
@@ -35,7 +38,7 @@ function App() {
           <Route path="/emergency" element={<Emergency/>}/>
         </Routes>
       </div>
-    // </div>
+     </div>
   );
 }
 
