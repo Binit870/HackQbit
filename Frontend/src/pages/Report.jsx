@@ -79,7 +79,7 @@ const Report = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative text-white overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center relative text-gray-900 overflow-hidden">
       {/* Background Image */}
       <img
         src={logo}
@@ -92,16 +92,16 @@ const Report = () => {
         variants={formVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 backdrop-blur-xl bg-white/10 p-6 rounded-2xl shadow-2xl border border-white/20 w-full max-w-md flex flex-col justify-center mx-auto mt-20"
+        className="relative z-10 backdrop-blur-xl bg-white/70 p-6 rounded-2xl shadow-2xl border border-white/80 w-full max-w-md flex flex-col justify-center mx-auto mt-20"
       >
         {/* Medical Report Heading */}
         <h1
-          className="text-2xl font-bold text-center mb-4 text-blue-100"
+          className="text-2xl font-bold text-center mb-4 text-blue-900"
           style={{
-            textShadow: "2px 2px 4px rgba(0,0,0,0.7), 0 0 10px rgba(0,123,255,0.5)",
+            textShadow: "2px 2px 4px rgba(255,255,255,0.7)",
           }}
         >
-          Medical Report
+          Report Analyzer
         </h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
@@ -113,7 +113,7 @@ const Report = () => {
               placeholder="First Name *"
               value={formData.firstName}
               onChange={handleChange}
-              className="px-4 py-2 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white transition-colors"
+              className="px-4 py-2 rounded-xl bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
               required
             />
             <input
@@ -122,23 +122,23 @@ const Report = () => {
               placeholder="Last Name *"
               value={formData.lastName}
               onChange={handleChange}
-              className="px-4 py-2 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white transition-colors"
+              className="px-4 py-2 rounded-xl bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
               required
             />
           </div>
 
           {/* Gender */}
           <div>
-            <p className="font-medium mb-1">Gender *</p>
+            <p className="font-medium mb-1 text-gray-900">Gender *</p>
             {["Male", "Female", "Other"].map((option) => (
-              <label key={option} className="mr-3">
+              <label key={option} className="mr-3 text-gray-900">
                 <input
                   type="radio"
                   name="gender"
                   value={option}
                   checked={formData.gender === option}
                   onChange={handleChange}
-                  className="mr-1"
+                  className="mr-1 accent-blue-500"
                   required
                 />
                 {option}
@@ -148,20 +148,20 @@ const Report = () => {
 
           {/* Upload Report (Below Gender) */}
           <div>
-            <h3 className="text-lg font-semibold mb-1">Upload Report</h3>
+            <h3 className="text-lg font-semibold mb-1 text-gray-900">Upload Report</h3>
             <input
               type="file"
               accept="image/*,application/pdf"
               onChange={handleChange}
-              className="px-4 py-2 rounded-xl bg-white/20 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-white transition-colors w-full"
+              className="px-4 py-2 rounded-xl bg-white text-gray-900 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors w-full"
             />
             {formData.reportFile && (
-              <p className="mt-2 text-white text-sm">{formData.reportFile.name} uploaded</p>
+              <p className="mt-2 text-gray-800 text-sm">{formData.reportFile.name} uploaded</p>
             )}
             <button
               type="button"
               onClick={handleAnalyze}
-              className="mt-2 px-5 py-2 rounded-xl bg-gradient-to-r from-green-400 to-green-700 text-white font-semibold text-lg hover:shadow-xl transition-all"
+              className="mt-2 px-5 py-2 rounded-xl bg-gradient-to-r from-green-600 to-green-800 text-white font-semibold text-lg hover:shadow-xl transition-all"
               disabled={analyzing}
             >
               {analyzing ? "Analyzing..." : "Analyze Report"}
@@ -171,7 +171,7 @@ const Report = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="px-5 py-2 rounded-xl bg-gradient-to-r from-green-400 to-green-700 text-white font-semibold text-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-5 py-2 rounded-xl bg-gradient-to-r from-green-600 to-green-800 text-white font-semibold text-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -189,7 +189,7 @@ const Report = () => {
         {message.text && (
           <p
             className={`mt-4 text-center text-sm font-medium ${
-              message.type === "success" ? "text-green-400" : "text-red-400"
+              message.type === "success" ? "text-green-600" : "text-red-600"
             }`}
           >
             {message.text}
@@ -198,11 +198,11 @@ const Report = () => {
 
         {/* Analyzed Data */}
         {analysis && (
-          <div className="mt-6 p-4 bg-white/10 rounded-xl border border-white/20">
-            <h2 className="text-xl font-bold mb-2 text-blue-100">Analyzed Data</h2>
+          <div className="mt-6 p-4 bg-gray-200 rounded-xl border border-gray-300 text-gray-900">
+            <h2 className="text-xl font-bold mb-2 text-blue-800">Analyzed Data</h2>
             <p><strong>Name:</strong> {analysis.name}</p>
             <p><strong>Age:</strong> {analysis.age}</p>
-          </div>
+ </div>
         )}
       </motion.div>
     </div>
