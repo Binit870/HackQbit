@@ -1,6 +1,7 @@
 import React from "react";
 import { ShieldCheck, Leaf } from "lucide-react";
 import Chatbot from "../components/Chatbot";
+import Services from "./Services"; // 👈 import your Services page
 
 export default function HeroSection() {
   return (
@@ -41,7 +42,14 @@ export default function HeroSection() {
           </button>
         </div>
       </header>
+
+      {/* Chatbot Section */}
       <Chatbot />
+
+      {/* 👇 Services Section directly below */}
+      <section id="services">
+        <Services />
+      </section>
     </div>
   );
 }
