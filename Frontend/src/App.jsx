@@ -1,7 +1,12 @@
-export default function App() {
+import React from "react";
+import Symptoms from "./components/symtoms/Symptoms";
+
+const App = () => {
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-  )
-}
+    <div>
+      <Symptoms />
+    </div>
+  );
+};
+
+export default App;
