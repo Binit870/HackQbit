@@ -24,7 +24,7 @@ const app = express();
 const server = createServer(app);
 
 // ✅ Allowed origins
-const allowedOrigins = ["http://localhost:5173","http://localhost:5174","https://smart-healthcare-diagnosis.netlify.app/", "http://127.0.0.1:5173"];
+const allowedOrigins = ["http://localhost:5173","http://localhost:5174","https://smart-healthcare-diagnosis.netlify.app", "http://127.0.0.1:5173"];
 
 // ✅ CORS setup
 app.use(
