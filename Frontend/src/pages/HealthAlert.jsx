@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom"; // ✅ import for navigation
+import Api from "../utils/Api"; // ✅ Import the Api utility
 
 const HealthAlerts = () => {
   const navigate = useNavigate(); // ✅ initialize navigation
@@ -60,12 +60,13 @@ const HealthAlerts = () => {
     setMessage("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/alerts/preferences", form);
+      // ✅ Use the Api utility to make the POST request
+      const res = await Api.post("/alerts/preferences", form);
       if (res.data.success) {
         setMessage("✅ Your preferences have been saved! Health alerts will be sent to your email.");
         setTimeout(() => navigate("/"), 2000); // ✅ redirect to home after 2 seconds
       } else {
-        setMessage("⚠️ Unable to save your preferences. Please try again.");
+        setMessage("⚠ Unable to save your preferences. Please try again.");
       }
     } catch (error) {
       console.error(error);
