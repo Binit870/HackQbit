@@ -11,74 +11,71 @@ const ReportResult = ({ result, selectedHistoryItem }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="mt-10 p-6 md:p-10 bg-white/10 backdrop-blur-3xl rounded-2xl border border-white/20 shadow-2xl hover:shadow-cyan-400/20 transition-all duration-300"
+      className="mt-10 p-6 md:p-10 bg-white/40 backdrop-blur-xl rounded-2xl border border-white/40 shadow-lg hover:shadow-green-200/40 transition-all duration-300 text-gray-900"
     >
-      {/* Header */}
-      <h2 className="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-cyan-300 text-center mb-6">
+      <h2 className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-green-600 to-emerald-700 bg-clip-text text-transparent text-center mb-6">
         📑 Report Summary
       </h2>
 
-      {/* History Info */}
       {selectedHistoryItem && (
-        <div className="text-center text-sm text-cyan-300 mb-6">
+        <div className="text-center text-sm text-gray-700 mb-6">
           Viewing summary for:{" "}
-          <span className="font-semibold text-cyan-300 hover:text-cyan-300 transition-colors">
+          <span className="font-semibold text-green-700">
             {selectedHistoryItem.name}
           </span>
         </div>
       )}
 
-      {/* Markdown Content */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.7 }}
-        className="prose prose-invert max-w-none leading-relaxed"
+        className="prose max-w-none leading-relaxed text-gray-800"
       >
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
             h1: ({ node, ...props }) => (
               <h1
-                className="text-2xl font-bold text-cyan-300 border-b border-white/30 pb-1 mb-4"
+                className="text-2xl font-bold text-green-700 border-b border-gray-300 pb-1 mb-4"
                 {...props}
               />
             ),
             h2: ({ node, ...props }) => (
               <h2
-                className="text-xl font-semibold text-cyan-300 mt-6 mb-3"
+                className="text-xl font-semibold text-green-700 mt-6 mb-3"
                 {...props}
               />
             ),
             p: ({ node, ...props }) => (
-              <p
-                className="text-cyan-300 leading-relaxed mb-4 hover:text-cyan-600 transition-colors"
-                {...props}
-              />
+              <p className="text-gray-800 mb-4" {...props} />
             ),
             strong: ({ node, ...props }) => (
-              <strong className="text-black font-semibold bg-cyan-300 px-1 rounded" {...props} />
+              <strong
+                className="text-emerald-700 font-semibold bg-emerald-100 px-1 rounded"
+                {...props}
+              />
             ),
             blockquote: ({ node, ...props }) => (
               <blockquote
-                className="border-l-4 border-cyan-400 pl-4 italic text-white/80 bg-white/10 rounded-md py-2"
+                className="border-l-4 border-green-500 pl-4 italic text-gray-700 bg-green-50 rounded-md py-2"
                 {...props}
               />
             ),
-            li: ({ node, ordered, ...props }) => (
+            li: ({ node, ...props }) => (
               <li
-                className="mb-2 pl-2 before:content-['✔'] before:mr-2 before:text-cyan-400"
+                className="mb-2 pl-2 before:content-['✔'] before:mr-2 before:text-green-600"
                 {...props}
               />
             ),
             code: ({ node, inline, ...props }) =>
               inline ? (
                 <code
-                  className="bg-white/20 text-cyan-300 px-1 py-0.5 rounded text-sm"
+                  className="bg-gray-200 text-green-700 px-1 py-0.5 rounded text-sm"
                   {...props}
                 />
               ) : (
-                <pre className="bg-white/10 text-cyan-200 p-3 rounded-lg overflow-x-auto shadow-lg">
+                <pre className="bg-gray-100 text-green-700 p-3 rounded-lg overflow-x-auto shadow-inner">
                   <code {...props} />
                 </pre>
               ),

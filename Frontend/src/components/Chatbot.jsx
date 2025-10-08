@@ -1,9 +1,5 @@
 import React, { useState, useRef } from "react";
-<<<<<<< HEAD
-import { X, Send, Mic } from "lucide-react";
-=======
 import { X, Send, Mic, Volume2, VolumeX } from "lucide-react";
->>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
 import API from "../utils/Api"; // ✅ your axios instance
 
 export default function Chatbot() {
@@ -14,10 +10,6 @@ export default function Chatbot() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
-<<<<<<< HEAD
-=======
-  const [isMuted, setIsMuted] = useState(false); // ✅ NEW: Voice toggle state
->>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
   const recognitionRef = useRef(null);
 
   // 🎙️ Initialize voice recognition (Speech-to-Text)
@@ -54,18 +46,10 @@ export default function Chatbot() {
 
   // 🔊 Voice output (Text-to-Speech)
   const speak = (text) => {
-<<<<<<< HEAD
-=======
-    if (isMuted) return; // ✅ Respect mute toggle
->>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
     if ("speechSynthesis" in window) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = "en-US";
       utterance.rate = 1;
-<<<<<<< HEAD
-=======
-      window.speechSynthesis.cancel(); // stop any ongoing speech
->>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
       window.speechSynthesis.speak(utterance);
     }
   };
@@ -92,12 +76,6 @@ export default function Chatbot() {
     const reply = await sendChatMessage(userMessage);
 
     setMessages((prev) => [...prev, { from: "bot", text: reply }]);
-<<<<<<< HEAD
-    speak(reply); // 🎧 Bot speaks the response
-    setLoading(false);
-  };
-
-=======
     speak(reply); // 🎧 Bot speaks the response (only if not muted)
     setLoading(false);
   };
@@ -110,18 +88,13 @@ export default function Chatbot() {
     }
   };
 
->>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
   return (
     <div className="fixed bottom-8 right-8 z-50">
       {/* Floating Chat Icon (🤖 with Stethoscope) */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-<<<<<<< HEAD
           className="bg-white  rounded-full shadow-xl hover:scale-110 g-green-700/20 transition-transform"
-=======
-          className="bg-white rounded-full shadow-xl hover:scale-110 transition-transform"
->>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
         >
           <img
             src="/healthbot.png"
@@ -136,21 +109,7 @@ export default function Chatbot() {
         <div className="w-[420px] h-[550px] bg-white rounded-3xl shadow-2xl flex flex-col border border-gray-200 overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between bg-green-600 text-white px-5 py-4">
-<<<<<<< HEAD
             <h3 className="font-semibold text-lg">Health Assistant</h3>
-=======
-            <div className="flex items-center gap-3">
-              <h3 className="font-semibold text-lg">Health Assistant</h3>
-              <button
-                onClick={toggleMute}
-                className="hover:bg-green-700 p-1 rounded-full transition"
-                title={isMuted ? "Unmute voice" : "Mute voice"}
-              >
-                {isMuted ? <VolumeX size={22} /> : <Volume2 size={22} />}
-              </button>
-            </div>
-
->>>>>>> 4d6ccd90ac25559867e067811e21a2a4e385bac6
             <button
               onClick={() => setIsOpen(false)}
               className="hover:bg-green-700 p-1 rounded-full transition"

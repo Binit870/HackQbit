@@ -1,83 +1,69 @@
 import React, { useState } from "react";
-import { FaPaperPlane, FaSpinner } from "react-icons/fa";
 import API from "../../utils/Api";
 
 const PostForm = ({ socket, user, token }) => {
-  const [newComment, setNewComment] = useState("");
+  const [content, setContent] = useState("");
   const [category, setCategory] = useState("general");
-  const [isPosting, setIsPosting] = useState(false);
 
-  const handlePostSubmit = async () => {
-    if (!newComment.trim() || isPosting) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!content.trim()) return;
 
-    setIsPosting(true);
     try {
       const response = await API.post(
         "/community/posts",
-        { content: newComment, category },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { content, category },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
 
-      socket.emit("postComment", response.data);
-      setNewComment("");
-      setCategory("general");
+      socket.emit("newPost", response.data);
+      setContent("");
     } catch (err) {
-      console.error("Failed to post comment:", err);
-      alert("Failed to share your thought. Please try again.");
-    } finally {
-      setIsPosting(false);
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handlePostSubmit();
+      console.error("Error creating post:", err);
+      alert("Failed to post. Please try again.");
     }
   };
 
   return (
-    <div className="mb-10 p-4 sm:p-6 rounded-3xl backdrop-blur-xl bg-white/10 shadow-xl border border-white/20 w-full max-w-3xl mx-auto">
-      <div className="flex flex-col space-y-4">
-        {/* Category select */}
+    <form
+      onSubmit={handleSubmit}
+      className="p-6 mb-10 rounded-3xl backdrop-blur-xl bg-white/50 border border-white/60 shadow-lg"
+    >
+      <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+        Create a New Post 🌱
+      </h3>
+
+      <div className="mb-4">
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="Share something inspiring..."
+          rows="4"
+          className="w-full p-3 rounded-2xl border border-gray-300 bg-white/70 backdrop-blur-xl text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent"
+        />
+      </div>
+
+      <div className="flex items-center justify-between gap-4">
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full p-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
+          className="px-3 py-2 rounded-xl border border-gray-300 bg-white/70 backdrop-blur-xl text-black focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent"
         >
           <option value="general">General</option>
           <option value="doctor">Doctor</option>
-          
           <option value="health">Health</option>
         </select>
 
-        {/* Textarea with embedded icon */}
-        <div className="relative">
-          <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="What's on your mind? Press Enter to send"
-            className="w-full p-4 pr-12 rounded-lg bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none transition-all duration-300 text-sm sm:text-base"
-            rows="3"
-            disabled={isPosting}
-          ></textarea>
-          <button
-            type="button"
-            onClick={handlePostSubmit}
-            disabled={isPosting || !newComment.trim()}
-            className="absolute bottom-3 right-3 text-blue-400 hover:text-blue-500 disabled:text-gray-500"
-            title="Send"
-          >
-            {isPosting ? (
-              <FaSpinner className="animate-spin text-lg" />
-            ) : (
-              <FaPaperPlane className="text-lg" />
-            )}
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-400 text-white font-semibold rounded-xl shadow-md hover:scale-105 transition-transform"
+        >
+          Post ✨
+        </button>
       </div>
-    </div>
+    </form>
   );
 };
 
